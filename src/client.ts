@@ -60,6 +60,7 @@ import { Entities, Entity, EntityKind, EntityList, EntityListParams } from './re
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
+import { toBase64 } from './internal/utils/base64';
 import { readEnv } from './internal/utils/env';
 import {
   type LogLevel,
@@ -72,9 +73,14 @@ import { isEmptyObj } from './internal/utils/values';
 
 export interface ClientOptions {
   /**
-   * Defaults to process.env['WITHLUMINARY_API_KEY'].
+   * Defaults to process.env['CLIENT_ID'].
    */
-  apiKey?: string | null | undefined;
+  clientID?: string | undefined;
+
+  /**
+   * Defaults to process.env['CLIENT_SECRET'].
+   */
+  clientSecret?: string | undefined;
 
   /**
    * Your Luminary subdomain
@@ -154,7 +160,8 @@ export interface ClientOptions {
  * API Client for interfacing with the Luminary API.
  */
 export class Luminary {
-  apiKey: string | null;
+  clientID: string;
+  clientSecret: string;
   subdomain: string;
 
   baseURL: string;
@@ -172,7 +179,8 @@ export class Luminary {
   /**
    * API Client for interfacing with the Luminary API.
    *
-   * @param {string | null | undefined} [opts.apiKey=process.env['WITHLUMINARY_API_KEY'] ?? null]
+   * @param {string | undefined} [opts.clientID=process.env['CLIENT_ID'] ?? undefined]
+   * @param {string | undefined} [opts.clientSecret=process.env['CLIENT_SECRET'] ?? undefined]
    * @param {string | undefined} [opts.subdomain=process.env['WITHLUMINARY_SUBDOMAIN'] ?? lum]
    * @param {string} [opts.baseURL=process.env['LUMINARY_BASE_URL'] ?? https://{subdomain}.withluminary.com/api/public/v1] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
@@ -184,12 +192,25 @@ export class Luminary {
    */
   constructor({
     baseURL = readEnv('LUMINARY_BASE_URL'),
-    apiKey = readEnv('WITHLUMINARY_API_KEY') ?? null,
+    clientID = readEnv('CLIENT_ID'),
+    clientSecret = readEnv('CLIENT_SECRET'),
     subdomain = readEnv('WITHLUMINARY_SUBDOMAIN') ?? 'lum',
     ...opts
   }: ClientOptions = {}) {
+    if (clientID === undefined) {
+      throw new Errors.LuminaryError(
+        "The CLIENT_ID environment variable is missing or empty; either provide it, or instantiate the Luminary client with an clientID option, like new Luminary({ clientID: 'My Client ID' }).",
+      );
+    }
+    if (clientSecret === undefined) {
+      throw new Errors.LuminaryError(
+        "The CLIENT_SECRET environment variable is missing or empty; either provide it, or instantiate the Luminary client with an clientSecret option, like new Luminary({ clientSecret: 'My Client Secret' }).",
+      );
+    }
+
     const options: ClientOptions = {
-      apiKey,
+      clientID,
+      clientSecret,
       subdomain,
       ...opts,
       baseURL: baseURL || `https://${subdomain}.withluminary.com/api/public/v1`,
@@ -212,7 +233,8 @@ export class Luminary {
 
     this._options = options;
 
-    this.apiKey = apiKey;
+    this.clientID = clientID;
+    this.clientSecret = clientSecret;
     this.subdomain = subdomain;
   }
 
@@ -229,10 +251,12 @@ export class Luminary {
       logLevel: this.logLevel,
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
-      apiKey: this.apiKey,
+      clientID: this.clientID,
+      clientSecret: this.clientSecret,
       subdomain: this.subdomain,
       ...options,
     });
+    client.oauth2AuthState = this.oauth2AuthState;
     return client;
   }
 
@@ -248,23 +272,76 @@ export class Luminary {
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
-    if (this.apiKey && values.get('authorization')) {
-      return;
-    }
-    if (nulls.has('authorization')) {
-      return;
-    }
-
-    throw new Error(
-      'Could not resolve authentication method. Expected the apiKey to be set. Or for the "Authorization" headers to be explicitly omitted',
-    );
+    return;
   }
 
+  private oauth2AuthState:
+    | {
+        promise: Promise<{
+          access_token: string;
+          token_type: string;
+          expires_in: number;
+          expires_at: Date;
+          refresh_token?: string;
+        }>;
+        clientID: string;
+        clientSecret: string;
+      }
+    | undefined;
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    if (this.apiKey == null) {
+    if (!this.clientID || !this.clientSecret) {
       return undefined;
     }
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
+
+    // Invalidate the cache if the token is expired
+    if (this.oauth2AuthState && +(await this.oauth2AuthState.promise).expires_at < Date.now()) {
+      this.oauth2AuthState = undefined;
+    }
+
+    // Invalidate the cache if the relevant state has been changed
+    if (
+      this.oauth2AuthState &&
+      this.oauth2AuthState.clientID !== this.clientID &&
+      this.oauth2AuthState.clientSecret !== this.clientSecret
+    ) {
+      this.oauth2AuthState = undefined;
+    }
+
+    if (!this.oauth2AuthState) {
+      this.oauth2AuthState = {
+        promise: this.fetch(
+          this.buildURL('https://auth.withluminary.com/oauth/token', { grant_type: 'client_credentials' }),
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Basic ${toBase64(`${this.clientID}:${this.clientSecret}`)}`,
+            },
+          },
+        ).then(async (res) => {
+          if (!res.ok) {
+            const errText = await res.text().catch(() => '');
+            const errJSON = errText ? safeJSON(errText) : undefined;
+            const errMessage = errJSON ? undefined : errText;
+            throw this.makeStatusError(res.status, errJSON, errMessage, res.headers);
+          }
+          const json = (await res.json()) as {
+            access_token: string;
+            token_type: string;
+            expires_in: number;
+            refresh_token?: string;
+          };
+          const now = new Date();
+          now.setSeconds(now.getSeconds() + json.expires_in);
+          return { ...json, expires_at: now };
+        }),
+        clientID: this.clientID,
+        clientSecret: this.clientSecret,
+      };
+    }
+
+    const token = await this.oauth2AuthState.promise;
+
+    return buildHeaders([{ Authorization: `Bearer ${token.access_token}` }]);
   }
 
   /**
@@ -581,6 +658,13 @@ export class Luminary {
     // If the server explicitly says whether or not to retry, obey.
     if (shouldRetryHeader === 'true') return true;
     if (shouldRetryHeader === 'false') return false;
+
+    // Retry if the token has expired
+    const oauth2Auth = await this.oauth2AuthState?.promise;
+    if (response.status === 401 && oauth2Auth && +oauth2Auth.expires_at - Date.now() < 10 * 1000) {
+      this.oauth2AuthState = undefined;
+      return true;
+    }
 
     // Retry on request timeouts.
     if (response.status === 408) return true;

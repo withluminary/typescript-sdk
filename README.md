@@ -25,9 +25,7 @@ The full API of this library can be found in [api.md](api.md).
 ```js
 import Luminary from 'withluminary';
 
-const client = new Luminary({
-  apiKey: process.env['WITHLUMINARY_API_KEY'], // This is the default and can be omitted
-});
+const client = new Luminary();
 
 const households = await client.households.list();
 
@@ -42,9 +40,7 @@ This library includes TypeScript definitions for all request params and response
 ```ts
 import Luminary from 'withluminary';
 
-const client = new Luminary({
-  apiKey: process.env['WITHLUMINARY_API_KEY'], // This is the default and can be omitted
-});
+const client = new Luminary();
 
 const households: Luminary.HouseholdListResponse = await client.households.list();
 ```
