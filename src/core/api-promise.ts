@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { type Withluminary } from '../client';
+import { type Luminary } from '../client';
 
 import { type PromiseOrValue } from '../internal/types';
 import { APIResponseProps, defaultParseResponse } from '../internal/parse';
@@ -11,13 +11,13 @@ import { APIResponseProps, defaultParseResponse } from '../internal/parse';
  */
 export class APIPromise<T> extends Promise<T> {
   private parsedPromise: Promise<T> | undefined;
-  #client: Withluminary;
+  #client: Luminary;
 
   constructor(
-    client: Withluminary,
+    client: Luminary,
     private responsePromise: Promise<APIResponseProps>,
     private parseResponse: (
-      client: Withluminary,
+      client: Luminary,
       props: APIResponseProps,
     ) => PromiseOrValue<T> = defaultParseResponse,
   ) {

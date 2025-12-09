@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { Withluminary } from 'withluminary';
+import { Luminary } from 'withluminary';
 
-const { stringifyQuery } = Withluminary.prototype as any;
+const { stringifyQuery } = Luminary.prototype as any;
 
 describe(stringifyQuery, () => {
   for (const [input, expected] of [

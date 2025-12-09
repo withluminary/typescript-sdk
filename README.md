@@ -1,8 +1,8 @@
-# Withluminary TypeScript API Library
+# Luminary TypeScript API Library
 
 [![NPM version](<https://img.shields.io/npm/v/withluminary.svg?label=npm%20(stable)>)](https://npmjs.org/package/withluminary) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/withluminary)
 
-This library provides convenient access to the Withluminary REST API from server-side TypeScript or JavaScript.
+This library provides convenient access to the Luminary REST API from server-side TypeScript or JavaScript.
 
 The full API of this library can be found in [api.md](api.md).
 
@@ -23,9 +23,11 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 
-const client = new Withluminary();
+const client = new Luminary({
+  apiKey: process.env['WITHLUMINARY_API_KEY'], // This is the default and can be omitted
+});
 
 const households = await client.households.list();
 
@@ -38,11 +40,13 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 
-const client = new Withluminary();
+const client = new Luminary({
+  apiKey: process.env['WITHLUMINARY_API_KEY'], // This is the default and can be omitted
+});
 
-const households: Withluminary.HouseholdListResponse = await client.households.list();
+const households: Luminary.HouseholdListResponse = await client.households.list();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -58,9 +62,9 @@ Request parameters that correspond to file uploads can be passed in many differe
 
 ```ts
 import fs from 'fs';
-import Withluminary, { toFile } from 'withluminary';
+import Luminary, { toFile } from 'withluminary';
 
-const client = new Withluminary();
+const client = new Luminary();
 
 // If you have access to Node `fs` we recommend using `fs.createReadStream()`:
 await client.documents.create({
@@ -110,7 +114,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 const households = await client.households.list().catch(async (err) => {
-  if (err instanceof Withluminary.APIError) {
+  if (err instanceof Luminary.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
     console.log(err.headers); // {server: 'nginx', ...}
@@ -144,7 +148,7 @@ You can use the `maxRetries` option to configure or disable this:
 <!-- prettier-ignore -->
 ```js
 // Configure the default for all requests:
-const client = new Withluminary({
+const client = new Luminary({
   maxRetries: 0, // default is 2
 });
 
@@ -161,7 +165,7 @@ Requests time out after 1 minute by default. You can configure this with a `time
 <!-- prettier-ignore -->
 ```ts
 // Configure the default for all requests:
-const client = new Withluminary({
+const client = new Luminary({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
@@ -187,7 +191,7 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 
 <!-- prettier-ignore -->
 ```ts
-const client = new Withluminary();
+const client = new Luminary();
 
 const response = await client.households.list().asResponse();
 console.log(response.headers.get('X-My-Header'));
@@ -208,13 +212,13 @@ console.log(households.data);
 
 The log level can be configured in two ways:
 
-1. Via the `WITHLUMINARY_LOG` environment variable
+1. Via the `LUMINARY_LOG` environment variable
 2. Using the `logLevel` client option (overrides the environment variable if set)
 
 ```ts
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 
-const client = new Withluminary({
+const client = new Luminary({
   logLevel: 'debug', // Show all log messages
 });
 ```
@@ -240,13 +244,13 @@ When providing a custom logger, the `logLevel` option still controls which messa
 below the configured level will not be sent to your logger.
 
 ```ts
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 import pino from 'pino';
 
 const logger = pino();
 
-const client = new Withluminary({
-  logger: logger.child({ name: 'Withluminary' }),
+const client = new Luminary({
+  logger: logger.child({ name: 'Luminary' }),
   logLevel: 'debug', // Send all messages to pino, allowing it to filter
 });
 ```
@@ -309,10 +313,10 @@ globalThis.fetch = fetch;
 Or pass it to the client:
 
 ```ts
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 import fetch from 'my-fetch';
 
-const client = new Withluminary({ fetch });
+const client = new Luminary({ fetch });
 ```
 
 ### Fetch options
@@ -320,9 +324,9 @@ const client = new Withluminary({ fetch });
 If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
 
 ```ts
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 
-const client = new Withluminary({
+const client = new Luminary({
   fetchOptions: {
     // `RequestInit` options
   },
@@ -337,11 +341,11 @@ options to requests:
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
 
 ```ts
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 import * as undici from 'undici';
 
 const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
-const client = new Withluminary({
+const client = new Luminary({
   fetchOptions: {
     dispatcher: proxyAgent,
   },
@@ -351,9 +355,9 @@ const client = new Withluminary({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
 
 ```ts
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 
-const client = new Withluminary({
+const client = new Luminary({
   fetchOptions: {
     proxy: 'http://localhost:8888',
   },
@@ -363,10 +367,10 @@ const client = new Withluminary({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
 
 ```ts
-import Withluminary from 'npm:withluminary';
+import Luminary from 'npm:withluminary';
 
 const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
-const client = new Withluminary({
+const client = new Luminary({
   fetchOptions: {
     client: httpClient,
   },
