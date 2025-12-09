@@ -25,13 +25,11 @@ The full API of this library can be found in [api.md](api.md).
 ```js
 import Withluminary from 'withluminary';
 
-const client = new Withluminary({
-  apiKey: process.env['PETSTORE_API_KEY'], // This is the default and can be omitted
-});
+const client = new Withluminary();
 
-const order = await client.store.orders.create({ petId: 1, quantity: 1, status: 'placed' });
+const households = await client.households.list();
 
-console.log(order.id);
+console.log(households.data);
 ```
 
 ### Request & Response types
@@ -42,14 +40,66 @@ This library includes TypeScript definitions for all request params and response
 ```ts
 import Withluminary from 'withluminary';
 
-const client = new Withluminary({
-  apiKey: process.env['PETSTORE_API_KEY'], // This is the default and can be omitted
-});
+const client = new Withluminary();
 
-const response: Withluminary.StoreListInventoryResponse = await client.store.listInventory();
+const households: Withluminary.HouseholdListResponse = await client.households.list();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
+
+## File uploads
+
+Request parameters that correspond to file uploads can be passed in many different forms:
+
+- `File` (or an object with the same structure)
+- a `fetch` `Response` (or an object with the same structure)
+- an `fs.ReadStream`
+- the return value of our `toFile` helper
+
+```ts
+import fs from 'fs';
+import Withluminary, { toFile } from 'withluminary';
+
+const client = new Withluminary();
+
+// If you have access to Node `fs` we recommend using `fs.createReadStream()`:
+await client.documents.create({
+  file: fs.createReadStream('/path/to/file'),
+  household_id: 'household_01ARZ3NDEKTSV4RRFFQ69G5FAV',
+  name: 'Trust Agreement.pdf',
+  type: 'GRAT_DESIGN_SUMMARY',
+});
+
+// Or if you have the web `File` API you can pass a `File` instance:
+await client.documents.create({
+  file: new File(['my bytes'], 'file'),
+  household_id: 'household_01ARZ3NDEKTSV4RRFFQ69G5FAV',
+  name: 'Trust Agreement.pdf',
+  type: 'GRAT_DESIGN_SUMMARY',
+});
+
+// You can also pass a `fetch` `Response`:
+await client.documents.create({
+  file: await fetch('https://somesite/file'),
+  household_id: 'household_01ARZ3NDEKTSV4RRFFQ69G5FAV',
+  name: 'Trust Agreement.pdf',
+  type: 'GRAT_DESIGN_SUMMARY',
+});
+
+// Finally, if none of the above are convenient, you can use our `toFile` helper:
+await client.documents.create({
+  file: await toFile(Buffer.from('my bytes'), 'file'),
+  household_id: 'household_01ARZ3NDEKTSV4RRFFQ69G5FAV',
+  name: 'Trust Agreement.pdf',
+  type: 'GRAT_DESIGN_SUMMARY',
+});
+await client.documents.create({
+  file: await toFile(new Uint8Array([0, 1, 2]), 'file'),
+  household_id: 'household_01ARZ3NDEKTSV4RRFFQ69G5FAV',
+  name: 'Trust Agreement.pdf',
+  type: 'GRAT_DESIGN_SUMMARY',
+});
+```
 
 ## Handling errors
 
@@ -59,7 +109,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const response = await client.store.listInventory().catch(async (err) => {
+const households = await client.households.list().catch(async (err) => {
   if (err instanceof Withluminary.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -99,7 +149,7 @@ const client = new Withluminary({
 });
 
 // Or, configure per-request:
-await client.store.listInventory({
+await client.households.list({
   maxRetries: 5,
 });
 ```
@@ -116,7 +166,7 @@ const client = new Withluminary({
 });
 
 // Override per-request:
-await client.store.listInventory({
+await client.households.list({
   timeout: 5 * 1000,
 });
 ```
@@ -139,13 +189,13 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Withluminary();
 
-const response = await client.store.listInventory().asResponse();
+const response = await client.households.list().asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: response, response: raw } = await client.store.listInventory().withResponse();
+const { data: households, response: raw } = await client.households.list().withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(response);
+console.log(households.data);
 ```
 
 ### Logging
@@ -225,7 +275,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.store.orders.create({
+client.households.list({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',

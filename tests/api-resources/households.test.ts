@@ -1,16 +1,19 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Withluminary, { toFile } from 'withluminary';
+import Withluminary from 'withluminary';
 
 const client = new Withluminary({
-  apiKey: 'My API Key',
+  clientID: 'My Client ID',
+  clientSecret: 'My Client Secret',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource pets', () => {
+describe('resource households', () => {
   // Prism tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.pets.create({ name: 'doggie', photoUrls: ['string'] });
+    const responsePromise = client.households.create({
+      primary_relationship_owner_id: 'user_01ARZ3NDEKTSV4RRFFQ69G5FAV',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,19 +25,35 @@ describe('resource pets', () => {
 
   // Prism tests are disabled
   test.skip('create: required and optional params', async () => {
-    const response = await client.pets.create({
-      name: 'doggie',
-      photoUrls: ['string'],
-      id: 10,
-      category: { id: 1, name: 'Dogs' },
-      status: 'available',
-      tags: [{ id: 0, name: 'name' }],
+    const response = await client.households.create({
+      primary_relationship_owner_id: 'user_01ARZ3NDEKTSV4RRFFQ69G5FAV',
+      notes: 'notes',
+      primary_individuals: [
+        {
+          first_name: 'John',
+          last_name: 'Smith',
+          state: 'state',
+          address_line1: 'address_line1',
+          address_line2: 'address_line2',
+          city: 'city',
+          country: 'country',
+          date_of_birth: '2019-12-27',
+          email: 'dev@stainless.com',
+          is_beneficiary: true,
+          is_deceased: true,
+          is_trustee: true,
+          middle_name: 'middle_name',
+          notes: 'notes',
+          postal_code: 'postal_code',
+          suffix: 'suffix',
+        },
+      ],
     });
   });
 
   // Prism tests are disabled
   test.skip('retrieve', async () => {
-    const responsePromise = client.pets.retrieve(0);
+    const responsePromise = client.households.retrieve('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -45,8 +64,8 @@ describe('resource pets', () => {
   });
 
   // Prism tests are disabled
-  test.skip('update: only required params', async () => {
-    const responsePromise = client.pets.update({ name: 'doggie', photoUrls: ['string'] });
+  test.skip('update', async () => {
+    const responsePromise = client.households.update('id', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -57,20 +76,28 @@ describe('resource pets', () => {
   });
 
   // Prism tests are disabled
-  test.skip('update: required and optional params', async () => {
-    const response = await client.pets.update({
-      name: 'doggie',
-      photoUrls: ['string'],
-      id: 10,
-      category: { id: 1, name: 'Dogs' },
-      status: 'available',
-      tags: [{ id: 0, name: 'name' }],
-    });
+  test.skip('list', async () => {
+    const responsePromise = client.households.list();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
+  test.skip('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.households.list({ limit: 1, offset: 0 }, { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Withluminary.NotFoundError);
   });
 
   // Prism tests are disabled
   test.skip('delete', async () => {
-    const responsePromise = client.pets.delete(0);
+    const responsePromise = client.households.delete('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -81,8 +108,8 @@ describe('resource pets', () => {
   });
 
   // Prism tests are disabled
-  test.skip('findByStatus', async () => {
-    const responsePromise = client.pets.findByStatus();
+  test.skip('listDocuments', async () => {
+    const responsePromise = client.households.listDocuments('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -93,16 +120,20 @@ describe('resource pets', () => {
   });
 
   // Prism tests are disabled
-  test.skip('findByStatus: request options and params are passed correctly', async () => {
+  test.skip('listDocuments: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.pets.findByStatus({ status: 'available' }, { path: '/_stainless_unknown_path' }),
+      client.households.listDocuments(
+        'id',
+        { limit: 1, offset: 0, type: 'GRAT_DESIGN_SUMMARY' },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Withluminary.NotFoundError);
   });
 
   // Prism tests are disabled
-  test.skip('findByTags', async () => {
-    const responsePromise = client.pets.findByTags();
+  test.skip('listEntities', async () => {
+    const responsePromise = client.households.listEntities('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -113,16 +144,20 @@ describe('resource pets', () => {
   });
 
   // Prism tests are disabled
-  test.skip('findByTags: request options and params are passed correctly', async () => {
+  test.skip('listEntities: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.pets.findByTags({ tags: ['string'] }, { path: '/_stainless_unknown_path' }),
+      client.households.listEntities(
+        'id',
+        { kind: 'REVOCABLE_TRUST', limit: 1, offset: 0 },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Withluminary.NotFoundError);
   });
 
   // Prism tests are disabled
-  test.skip('updateByID', async () => {
-    const responsePromise = client.pets.updateByID(0);
+  test.skip('listIndividuals', async () => {
+    const responsePromise = client.households.listIndividuals('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -133,36 +168,12 @@ describe('resource pets', () => {
   });
 
   // Prism tests are disabled
-  test.skip('updateByID: request options and params are passed correctly', async () => {
+  test.skip('listIndividuals: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.pets.updateByID(0, { name: 'name', status: 'status' }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Withluminary.NotFoundError);
-  });
-
-  // Prism tests are disabled
-  test.skip('uploadImage', async () => {
-    const responsePromise = client.pets.uploadImage(
-      0,
-      await toFile(Buffer.from('# my file contents'), 'README.md'),
-    );
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('uploadImage: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.pets.uploadImage(
-        0,
-        await toFile(Buffer.from('# my file contents'), 'README.md'),
-        { additionalMetadata: 'additionalMetadata' },
+      client.households.listIndividuals(
+        'id',
+        { is_primary: true, limit: 1, offset: 0 },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Withluminary.NotFoundError);
