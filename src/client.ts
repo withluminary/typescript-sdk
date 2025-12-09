@@ -60,7 +60,6 @@ import { Entities, Entity, EntityKind, EntityList, EntityListParams } from './re
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
-import { toBase64 } from './internal/utils/base64';
 import { readEnv } from './internal/utils/env';
 import {
   type LogLevel,
@@ -73,21 +72,19 @@ import { isEmptyObj } from './internal/utils/values';
 
 export interface ClientOptions {
   /**
-   * Defaults to process.env['CLIENT_ID'].
+   * Defaults to process.env['WITHLUMINARY_API_KEY'].
    */
-  clientID?: string | undefined;
+  apiKey?: string | null | undefined;
 
   /**
-   * Defaults to process.env['CLIENT_SECRET'].
+   * Your Luminary subdomain
    */
-  clientSecret?: string | undefined;
-
   subdomain?: string | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['WITHLUMINARY_BASE_URL'].
+   * Defaults to process.env['LUMINARY_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -141,7 +138,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['WITHLUMINARY_LOG'] or 'warn' if it isn't set.
+   * Defaults to process.env['LUMINARY_LOG'] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -154,11 +151,10 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Withluminary API.
+ * API Client for interfacing with the Luminary API.
  */
-export class Withluminary {
-  clientID: string;
-  clientSecret: string;
+export class Luminary {
+  apiKey: string | null;
   subdomain: string;
 
   baseURL: string;
@@ -174,12 +170,11 @@ export class Withluminary {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Withluminary API.
+   * API Client for interfacing with the Luminary API.
    *
-   * @param {string | undefined} [opts.clientID=process.env['CLIENT_ID'] ?? undefined]
-   * @param {string | undefined} [opts.clientSecret=process.env['CLIENT_SECRET'] ?? undefined]
-   * @param {string | undefined} [opts.subdomain=lum]
-   * @param {string} [opts.baseURL=process.env['WITHLUMINARY_BASE_URL'] ?? https://{subdomain}.withluminary.com/api/public/v1] - Override the default base URL for the API.
+   * @param {string | null | undefined} [opts.apiKey=process.env['WITHLUMINARY_API_KEY'] ?? null]
+   * @param {string | undefined} [opts.subdomain=process.env['WITHLUMINARY_SUBDOMAIN'] ?? lum]
+   * @param {string} [opts.baseURL=process.env['LUMINARY_BASE_URL'] ?? https://{subdomain}.withluminary.com/api/public/v1] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -188,40 +183,27 @@ export class Withluminary {
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = readEnv('WITHLUMINARY_BASE_URL'),
-    clientID = readEnv('CLIENT_ID'),
-    clientSecret = readEnv('CLIENT_SECRET'),
-    subdomain = 'lum',
+    baseURL = readEnv('LUMINARY_BASE_URL'),
+    apiKey = readEnv('WITHLUMINARY_API_KEY') ?? null,
+    subdomain = readEnv('WITHLUMINARY_SUBDOMAIN') ?? 'lum',
     ...opts
   }: ClientOptions = {}) {
-    if (clientID === undefined) {
-      throw new Errors.WithluminaryError(
-        "The CLIENT_ID environment variable is missing or empty; either provide it, or instantiate the Withluminary client with an clientID option, like new Withluminary({ clientID: 'My Client ID' }).",
-      );
-    }
-    if (clientSecret === undefined) {
-      throw new Errors.WithluminaryError(
-        "The CLIENT_SECRET environment variable is missing or empty; either provide it, or instantiate the Withluminary client with an clientSecret option, like new Withluminary({ clientSecret: 'My Client Secret' }).",
-      );
-    }
-
     const options: ClientOptions = {
-      clientID,
-      clientSecret,
+      apiKey,
       subdomain,
       ...opts,
-      baseURL: baseURL || `https://{subdomain}.withluminary.com/api/public/v1`,
+      baseURL: baseURL || `https://${subdomain}.withluminary.com/api/public/v1`,
     };
 
     this.baseURL = options.baseURL!;
-    this.timeout = options.timeout ?? Withluminary.DEFAULT_TIMEOUT /* 1 minute */;
+    this.timeout = options.timeout ?? Luminary.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('WITHLUMINARY_LOG'), "process.env['WITHLUMINARY_LOG']", this) ??
+      parseLogLevel(readEnv('LUMINARY_LOG'), "process.env['LUMINARY_LOG']", this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
@@ -230,8 +212,7 @@ export class Withluminary {
 
     this._options = options;
 
-    this.clientID = clientID;
-    this.clientSecret = clientSecret;
+    this.apiKey = apiKey;
     this.subdomain = subdomain;
   }
 
@@ -248,12 +229,10 @@ export class Withluminary {
       logLevel: this.logLevel,
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
-      clientID: this.clientID,
-      clientSecret: this.clientSecret,
+      apiKey: this.apiKey,
       subdomain: this.subdomain,
       ...options,
     });
-    client.oauth2ProfilesAuthState = this.oauth2ProfilesAuthState;
     return client;
   }
 
@@ -269,79 +248,23 @@ export class Withluminary {
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
-    return;
+    if (this.apiKey && values.get('authorization')) {
+      return;
+    }
+    if (nulls.has('authorization')) {
+      return;
+    }
+
+    throw new Error(
+      'Could not resolve authentication method. Expected the apiKey to be set. Or for the "Authorization" headers to be explicitly omitted',
+    );
   }
 
-  private oauth2ProfilesAuthState:
-    | {
-        promise: Promise<{
-          access_token: string;
-          token_type: string;
-          expires_in: number;
-          expires_at: Date;
-          refresh_token?: string;
-        }>;
-        clientID: string;
-        clientSecret: string;
-      }
-    | undefined;
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    if (!this.clientID || !this.clientSecret) {
+    if (this.apiKey == null) {
       return undefined;
     }
-
-    // Invalidate the cache if the token is expired
-    if (
-      this.oauth2ProfilesAuthState &&
-      +(await this.oauth2ProfilesAuthState.promise).expires_at < Date.now()
-    ) {
-      this.oauth2ProfilesAuthState = undefined;
-    }
-
-    // Invalidate the cache if the relevant state has been changed
-    if (
-      this.oauth2ProfilesAuthState &&
-      this.oauth2ProfilesAuthState.clientID !== this.clientID &&
-      this.oauth2ProfilesAuthState.clientSecret !== this.clientSecret
-    ) {
-      this.oauth2ProfilesAuthState = undefined;
-    }
-
-    if (!this.oauth2ProfilesAuthState) {
-      this.oauth2ProfilesAuthState = {
-        promise: this.fetch(
-          this.buildURL('https://auth.withluminary.com/oauth/token', { grant_type: 'client_credentials' }),
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Basic ${toBase64(`${this.clientID}:${this.clientSecret}`)}`,
-            },
-          },
-        ).then(async (res) => {
-          if (!res.ok) {
-            const errText = await res.text().catch(() => '');
-            const errJSON = errText ? safeJSON(errText) : undefined;
-            const errMessage = errJSON ? undefined : errText;
-            throw this.makeStatusError(res.status, errJSON, errMessage, res.headers);
-          }
-          const json = (await res.json()) as {
-            access_token: string;
-            token_type: string;
-            expires_in: number;
-            refresh_token?: string;
-          };
-          const now = new Date();
-          now.setSeconds(now.getSeconds() + json.expires_in);
-          return { ...json, expires_at: now };
-        }),
-        clientID: this.clientID,
-        clientSecret: this.clientSecret,
-      };
-    }
-
-    const token = await this.oauth2ProfilesAuthState.promise;
-
-    return buildHeaders([{ Authorization: `Bearer ${token.access_token}` }]);
+    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   /**
@@ -357,7 +280,7 @@ export class Withluminary {
         if (value === null) {
           return `${encodeURIComponent(key)}=`;
         }
-        throw new Errors.WithluminaryError(
+        throw new Errors.LuminaryError(
           `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
         );
       })
@@ -659,17 +582,6 @@ export class Withluminary {
     if (shouldRetryHeader === 'true') return true;
     if (shouldRetryHeader === 'false') return false;
 
-    // Retry if the token has expired
-    const oauth2ProfilesAuth = await this.oauth2ProfilesAuthState?.promise;
-    if (
-      response.status === 401 &&
-      oauth2ProfilesAuth &&
-      +oauth2ProfilesAuth.expires_at - Date.now() < 10 * 1000
-    ) {
-      this.oauth2ProfilesAuthState = undefined;
-      return true;
-    }
-
     // Retry on request timeouts.
     if (response.status === 408) return true;
 
@@ -840,10 +752,10 @@ export class Withluminary {
     }
   }
 
-  static Withluminary = this;
+  static Luminary = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static WithluminaryError = Errors.WithluminaryError;
+  static LuminaryError = Errors.LuminaryError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -866,13 +778,13 @@ export class Withluminary {
   individuals: API.Individuals = new API.Individuals(this);
 }
 
-Withluminary.DocumentSummaries = DocumentSummaries;
-Withluminary.Documents = Documents;
-Withluminary.Entities = Entities;
-Withluminary.Households = Households;
-Withluminary.Individuals = Individuals;
+Luminary.DocumentSummaries = DocumentSummaries;
+Luminary.Documents = Documents;
+Luminary.Entities = Entities;
+Luminary.Households = Households;
+Luminary.Individuals = Individuals;
 
-export declare namespace Withluminary {
+export declare namespace Luminary {
   export type RequestOptions = Opts.RequestOptions;
 
   export {

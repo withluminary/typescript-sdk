@@ -1,10 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 
-const client = new Withluminary({
-  clientID: 'My Client ID',
-  clientSecret: 'My Client Secret',
+const client = new Luminary({
+  apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
@@ -41,7 +40,7 @@ describe('resource entities', () => {
         { household_id: 'household_id', kind: 'REVOCABLE_TRUST', limit: 1, offset: 0 },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(Withluminary.NotFoundError);
+    ).rejects.toThrow(Luminary.NotFoundError);
   });
 
   // Prism tests are disabled

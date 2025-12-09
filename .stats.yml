@@ -1,4 +1,4 @@
 configured_endpoints: 29
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/luminary%2Fwithluminary-a4adb26a2b843dedb897f210f37ccc542d2c938c2b3c58e6bce42a66704d8434.yml
-openapi_spec_hash: 7e44b93121add2692a733eb900740006
-config_hash: 27f33ced5c9c54be46015f2278ead6e9
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/luminary%2Fwithluminary-690bf65dbc06585834cac81c7fada1498ca5c6e323cb941d3fea03bdd802dbba.yml
+openapi_spec_hash: 5d5bb2bb6d338a1de678735502a5c061
+config_hash: fe51b325a4752ae5e24f6a433c920690

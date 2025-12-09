@@ -1,10 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Withluminary from 'withluminary';
+import Luminary from 'withluminary';
 
-const client = new Withluminary({
-  clientID: 'My Client ID',
-  clientSecret: 'My Client Secret',
+const client = new Luminary({
+  apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
@@ -92,7 +91,7 @@ describe('resource households', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.households.list({ limit: 1, offset: 0 }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Withluminary.NotFoundError);
+    ).rejects.toThrow(Luminary.NotFoundError);
   });
 
   // Prism tests are disabled
@@ -128,7 +127,7 @@ describe('resource households', () => {
         { limit: 1, offset: 0, type: 'GRAT_DESIGN_SUMMARY' },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(Withluminary.NotFoundError);
+    ).rejects.toThrow(Luminary.NotFoundError);
   });
 
   // Prism tests are disabled
@@ -152,7 +151,7 @@ describe('resource households', () => {
         { kind: 'REVOCABLE_TRUST', limit: 1, offset: 0 },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(Withluminary.NotFoundError);
+    ).rejects.toThrow(Luminary.NotFoundError);
   });
 
   // Prism tests are disabled
@@ -176,6 +175,6 @@ describe('resource households', () => {
         { is_primary: true, limit: 1, offset: 0 },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(Withluminary.NotFoundError);
+    ).rejects.toThrow(Luminary.NotFoundError);
   });
 });
