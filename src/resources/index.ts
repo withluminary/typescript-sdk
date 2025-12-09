@@ -1,27 +1,49 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export * from './shared';
 export {
-  Pets,
-  type Category,
-  type Pet,
-  type PetFindByStatusResponse,
-  type PetFindByTagsResponse,
-  type PetUploadImageResponse,
-  type PetCreateParams,
-  type PetUpdateParams,
-  type PetFindByStatusParams,
-  type PetFindByTagsParams,
-  type PetUpdateByIDParams,
-  type PetUploadImageParams,
-} from './pets';
-export { Store, type StoreListInventoryResponse } from './store/store';
+  DocumentSummaries,
+  type DocumentSummary,
+  type DocumentSummaryEntryMode,
+  type DocumentSummaryFormat,
+  type Pagination,
+  type DocumentSummaryListResponse,
+  type DocumentSummaryUpdateParams,
+  type DocumentSummaryListParams,
+  type DocumentSummaryDownloadParams,
+} from './document-summaries';
 export {
-  Users,
-  type User,
-  type UserLoginResponse,
-  type UserCreateParams,
-  type UserUpdateParams,
-  type UserCreateWithListParams,
-  type UserLoginParams,
-} from './users';
+  Documents,
+  type Document,
+  type DocumentList,
+  type DocumentType,
+  type DocumentGetSummariesResponse,
+  type DocumentCreateParams,
+  type DocumentUpdateParams,
+  type DocumentListParams,
+} from './documents';
+export {
+  Entities,
+  type Entity,
+  type EntityKind,
+  type EntityList,
+  type EntityListParams,
+} from './entities/entities';
+export {
+  Households,
+  type Household,
+  type IndividualList,
+  type HouseholdListResponse,
+  type HouseholdCreateParams,
+  type HouseholdUpdateParams,
+  type HouseholdListParams,
+  type HouseholdListDocumentsParams,
+  type HouseholdListEntitiesParams,
+  type HouseholdListIndividualsParams,
+} from './households';
+export {
+  Individuals,
+  type Individual,
+  type IndividualCreateParams,
+  type IndividualUpdateParams,
+  type IndividualListParams,
+} from './individuals';

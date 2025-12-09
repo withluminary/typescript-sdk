@@ -11,39 +11,56 @@ import type { APIResponseProps } from './internal/parse';
 import { getPlatformHeaders } from './internal/detect-platform';
 import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
-import * as qs from './internal/qs';
 import { VERSION } from './version';
 import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
-  Category,
-  Pet,
-  PetCreateParams,
-  PetFindByStatusParams,
-  PetFindByStatusResponse,
-  PetFindByTagsParams,
-  PetFindByTagsResponse,
-  PetUpdateByIDParams,
-  PetUpdateParams,
-  PetUploadImageParams,
-  PetUploadImageResponse,
-  Pets,
-} from './resources/pets';
+  DocumentSummaries,
+  DocumentSummary,
+  DocumentSummaryDownloadParams,
+  DocumentSummaryEntryMode,
+  DocumentSummaryFormat,
+  DocumentSummaryListParams,
+  DocumentSummaryListResponse,
+  DocumentSummaryUpdateParams,
+  Pagination,
+} from './resources/document-summaries';
 import {
-  User,
-  UserCreateParams,
-  UserCreateWithListParams,
-  UserLoginParams,
-  UserLoginResponse,
-  UserUpdateParams,
-  Users,
-} from './resources/users';
-import { Store, StoreListInventoryResponse } from './resources/store/store';
+  Document,
+  DocumentCreateParams,
+  DocumentGetSummariesResponse,
+  DocumentList,
+  DocumentListParams,
+  DocumentType,
+  DocumentUpdateParams,
+  Documents,
+} from './resources/documents';
+import {
+  Household,
+  HouseholdCreateParams,
+  HouseholdListDocumentsParams,
+  HouseholdListEntitiesParams,
+  HouseholdListIndividualsParams,
+  HouseholdListParams,
+  HouseholdListResponse,
+  HouseholdUpdateParams,
+  Households,
+  IndividualList,
+} from './resources/households';
+import {
+  Individual,
+  IndividualCreateParams,
+  IndividualListParams,
+  IndividualUpdateParams,
+  Individuals,
+} from './resources/individuals';
+import { Entities, Entity, EntityKind, EntityList, EntityListParams } from './resources/entities/entities';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
+import { toBase64 } from './internal/utils/base64';
 import { readEnv } from './internal/utils/env';
 import {
   type LogLevel,
@@ -56,9 +73,16 @@ import { isEmptyObj } from './internal/utils/values';
 
 export interface ClientOptions {
   /**
-   * Defaults to process.env['PETSTORE_API_KEY'].
+   * Defaults to process.env['CLIENT_ID'].
    */
-  apiKey?: string | undefined;
+  clientID?: string | undefined;
+
+  /**
+   * Defaults to process.env['CLIENT_SECRET'].
+   */
+  clientSecret?: string | undefined;
+
+  subdomain?: string | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
@@ -133,7 +157,9 @@ export interface ClientOptions {
  * API Client for interfacing with the Withluminary API.
  */
 export class Withluminary {
-  apiKey: string;
+  clientID: string;
+  clientSecret: string;
+  subdomain: string;
 
   baseURL: string;
   maxRetries: number;
@@ -150,8 +176,10 @@ export class Withluminary {
   /**
    * API Client for interfacing with the Withluminary API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['PETSTORE_API_KEY'] ?? undefined]
-   * @param {string} [opts.baseURL=process.env['WITHLUMINARY_BASE_URL'] ?? https://petstore3.swagger.io/api/v3] - Override the default base URL for the API.
+   * @param {string | undefined} [opts.clientID=process.env['CLIENT_ID'] ?? undefined]
+   * @param {string | undefined} [opts.clientSecret=process.env['CLIENT_SECRET'] ?? undefined]
+   * @param {string | undefined} [opts.subdomain=lum]
+   * @param {string} [opts.baseURL=process.env['WITHLUMINARY_BASE_URL'] ?? https://{subdomain}.withluminary.com/api/public/v1] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -161,19 +189,28 @@ export class Withluminary {
    */
   constructor({
     baseURL = readEnv('WITHLUMINARY_BASE_URL'),
-    apiKey = readEnv('PETSTORE_API_KEY'),
+    clientID = readEnv('CLIENT_ID'),
+    clientSecret = readEnv('CLIENT_SECRET'),
+    subdomain = 'lum',
     ...opts
   }: ClientOptions = {}) {
-    if (apiKey === undefined) {
+    if (clientID === undefined) {
       throw new Errors.WithluminaryError(
-        "The PETSTORE_API_KEY environment variable is missing or empty; either provide it, or instantiate the Withluminary client with an apiKey option, like new Withluminary({ apiKey: 'My API Key' }).",
+        "The CLIENT_ID environment variable is missing or empty; either provide it, or instantiate the Withluminary client with an clientID option, like new Withluminary({ clientID: 'My Client ID' }).",
+      );
+    }
+    if (clientSecret === undefined) {
+      throw new Errors.WithluminaryError(
+        "The CLIENT_SECRET environment variable is missing or empty; either provide it, or instantiate the Withluminary client with an clientSecret option, like new Withluminary({ clientSecret: 'My Client Secret' }).",
       );
     }
 
     const options: ClientOptions = {
-      apiKey,
+      clientID,
+      clientSecret,
+      subdomain,
       ...opts,
-      baseURL: baseURL || `https://petstore3.swagger.io/api/v3`,
+      baseURL: baseURL || `https://{subdomain}.withluminary.com/api/public/v1`,
     };
 
     this.baseURL = options.baseURL!;
@@ -193,7 +230,9 @@ export class Withluminary {
 
     this._options = options;
 
-    this.apiKey = apiKey;
+    this.clientID = clientID;
+    this.clientSecret = clientSecret;
+    this.subdomain = subdomain;
   }
 
   /**
@@ -209,9 +248,12 @@ export class Withluminary {
       logLevel: this.logLevel,
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
-      apiKey: this.apiKey,
+      clientID: this.clientID,
+      clientSecret: this.clientSecret,
+      subdomain: this.subdomain,
       ...options,
     });
+    client.oauth2ProfilesAuthState = this.oauth2ProfilesAuthState;
     return client;
   }
 
@@ -219,7 +261,7 @@ export class Withluminary {
    * Check whether the base URL is set to its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== 'https://petstore3.swagger.io/api/v3';
+    return this.baseURL !== 'https://{subdomain}.withluminary.com/api/public/v1';
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -230,12 +272,96 @@ export class Withluminary {
     return;
   }
 
+  private oauth2ProfilesAuthState:
+    | {
+        promise: Promise<{
+          access_token: string;
+          token_type: string;
+          expires_in: number;
+          expires_at: Date;
+          refresh_token?: string;
+        }>;
+        clientID: string;
+        clientSecret: string;
+      }
+    | undefined;
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return buildHeaders([{ api_key: this.apiKey }]);
+    if (!this.clientID || !this.clientSecret) {
+      return undefined;
+    }
+
+    // Invalidate the cache if the token is expired
+    if (
+      this.oauth2ProfilesAuthState &&
+      +(await this.oauth2ProfilesAuthState.promise).expires_at < Date.now()
+    ) {
+      this.oauth2ProfilesAuthState = undefined;
+    }
+
+    // Invalidate the cache if the relevant state has been changed
+    if (
+      this.oauth2ProfilesAuthState &&
+      this.oauth2ProfilesAuthState.clientID !== this.clientID &&
+      this.oauth2ProfilesAuthState.clientSecret !== this.clientSecret
+    ) {
+      this.oauth2ProfilesAuthState = undefined;
+    }
+
+    if (!this.oauth2ProfilesAuthState) {
+      this.oauth2ProfilesAuthState = {
+        promise: this.fetch(
+          this.buildURL('https://auth.withluminary.com/oauth/token', { grant_type: 'client_credentials' }),
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Basic ${toBase64(`${this.clientID}:${this.clientSecret}`)}`,
+            },
+          },
+        ).then(async (res) => {
+          if (!res.ok) {
+            const errText = await res.text().catch(() => '');
+            const errJSON = errText ? safeJSON(errText) : undefined;
+            const errMessage = errJSON ? undefined : errText;
+            throw this.makeStatusError(res.status, errJSON, errMessage, res.headers);
+          }
+          const json = (await res.json()) as {
+            access_token: string;
+            token_type: string;
+            expires_in: number;
+            refresh_token?: string;
+          };
+          const now = new Date();
+          now.setSeconds(now.getSeconds() + json.expires_in);
+          return { ...json, expires_at: now };
+        }),
+        clientID: this.clientID,
+        clientSecret: this.clientSecret,
+      };
+    }
+
+    const token = await this.oauth2ProfilesAuthState.promise;
+
+    return buildHeaders([{ Authorization: `Bearer ${token.access_token}` }]);
   }
 
+  /**
+   * Basic re-implementation of `qs.stringify` for primitive types.
+   */
   protected stringifyQuery(query: Record<string, unknown>): string {
-    return qs.stringify(query, { arrayFormat: 'comma' });
+    return Object.entries(query)
+      .filter(([_, value]) => typeof value !== 'undefined')
+      .map(([key, value]) => {
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+        }
+        if (value === null) {
+          return `${encodeURIComponent(key)}=`;
+        }
+        throw new Errors.WithluminaryError(
+          `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
+        );
+      })
+      .join('&');
   }
 
   private getUserAgent(): string {
@@ -533,6 +659,17 @@ export class Withluminary {
     if (shouldRetryHeader === 'true') return true;
     if (shouldRetryHeader === 'false') return false;
 
+    // Retry if the token has expired
+    const oauth2ProfilesAuth = await this.oauth2ProfilesAuthState?.promise;
+    if (
+      response.status === 401 &&
+      oauth2ProfilesAuth &&
+      +oauth2ProfilesAuth.expires_at - Date.now() < 10 * 1000
+    ) {
+      this.oauth2ProfilesAuthState = undefined;
+      return true;
+    }
+
     // Retry on request timeouts.
     if (response.status === 408) return true;
 
@@ -722,44 +859,71 @@ export class Withluminary {
 
   static toFile = Uploads.toFile;
 
-  pets: API.Pets = new API.Pets(this);
-  store: API.Store = new API.Store(this);
-  users: API.Users = new API.Users(this);
+  documentSummaries: API.DocumentSummaries = new API.DocumentSummaries(this);
+  documents: API.Documents = new API.Documents(this);
+  entities: API.Entities = new API.Entities(this);
+  households: API.Households = new API.Households(this);
+  individuals: API.Individuals = new API.Individuals(this);
 }
 
-Withluminary.Pets = Pets;
-Withluminary.Store = Store;
-Withluminary.Users = Users;
+Withluminary.DocumentSummaries = DocumentSummaries;
+Withluminary.Documents = Documents;
+Withluminary.Entities = Entities;
+Withluminary.Households = Households;
+Withluminary.Individuals = Individuals;
 
 export declare namespace Withluminary {
   export type RequestOptions = Opts.RequestOptions;
 
   export {
-    Pets as Pets,
-    type Category as Category,
-    type Pet as Pet,
-    type PetFindByStatusResponse as PetFindByStatusResponse,
-    type PetFindByTagsResponse as PetFindByTagsResponse,
-    type PetUploadImageResponse as PetUploadImageResponse,
-    type PetCreateParams as PetCreateParams,
-    type PetUpdateParams as PetUpdateParams,
-    type PetFindByStatusParams as PetFindByStatusParams,
-    type PetFindByTagsParams as PetFindByTagsParams,
-    type PetUpdateByIDParams as PetUpdateByIDParams,
-    type PetUploadImageParams as PetUploadImageParams,
+    DocumentSummaries as DocumentSummaries,
+    type DocumentSummary as DocumentSummary,
+    type DocumentSummaryEntryMode as DocumentSummaryEntryMode,
+    type DocumentSummaryFormat as DocumentSummaryFormat,
+    type Pagination as Pagination,
+    type DocumentSummaryListResponse as DocumentSummaryListResponse,
+    type DocumentSummaryUpdateParams as DocumentSummaryUpdateParams,
+    type DocumentSummaryListParams as DocumentSummaryListParams,
+    type DocumentSummaryDownloadParams as DocumentSummaryDownloadParams,
   };
-
-  export { Store as Store, type StoreListInventoryResponse as StoreListInventoryResponse };
 
   export {
-    Users as Users,
-    type User as User,
-    type UserLoginResponse as UserLoginResponse,
-    type UserCreateParams as UserCreateParams,
-    type UserUpdateParams as UserUpdateParams,
-    type UserCreateWithListParams as UserCreateWithListParams,
-    type UserLoginParams as UserLoginParams,
+    Documents as Documents,
+    type Document as Document,
+    type DocumentList as DocumentList,
+    type DocumentType as DocumentType,
+    type DocumentGetSummariesResponse as DocumentGetSummariesResponse,
+    type DocumentCreateParams as DocumentCreateParams,
+    type DocumentUpdateParams as DocumentUpdateParams,
+    type DocumentListParams as DocumentListParams,
   };
 
-  export type Order = API.Order;
+  export {
+    Entities as Entities,
+    type Entity as Entity,
+    type EntityKind as EntityKind,
+    type EntityList as EntityList,
+    type EntityListParams as EntityListParams,
+  };
+
+  export {
+    Households as Households,
+    type Household as Household,
+    type IndividualList as IndividualList,
+    type HouseholdListResponse as HouseholdListResponse,
+    type HouseholdCreateParams as HouseholdCreateParams,
+    type HouseholdUpdateParams as HouseholdUpdateParams,
+    type HouseholdListParams as HouseholdListParams,
+    type HouseholdListDocumentsParams as HouseholdListDocumentsParams,
+    type HouseholdListEntitiesParams as HouseholdListEntitiesParams,
+    type HouseholdListIndividualsParams as HouseholdListIndividualsParams,
+  };
+
+  export {
+    Individuals as Individuals,
+    type Individual as Individual,
+    type IndividualCreateParams as IndividualCreateParams,
+    type IndividualUpdateParams as IndividualUpdateParams,
+    type IndividualListParams as IndividualListParams,
+  };
 }

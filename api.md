@@ -1,61 +1,93 @@
-# Shared
+# DocumentSummaries
 
 Types:
 
-- <code><a href="./src/resources/shared.ts">Order</a></code>
+- <code><a href="./src/resources/document-summaries.ts">DocumentSummary</a></code>
+- <code><a href="./src/resources/document-summaries.ts">DocumentSummaryEntryMode</a></code>
+- <code><a href="./src/resources/document-summaries.ts">DocumentSummaryFormat</a></code>
+- <code><a href="./src/resources/document-summaries.ts">Pagination</a></code>
+- <code><a href="./src/resources/document-summaries.ts">DocumentSummaryListResponse</a></code>
 
-# Pets
+Methods:
+
+- <code title="get /document-summaries/{id}">client.documentSummaries.<a href="./src/resources/document-summaries.ts">retrieve</a>(id) -> DocumentSummary</code>
+- <code title="put /document-summaries/{id}">client.documentSummaries.<a href="./src/resources/document-summaries.ts">update</a>(id, { ...params }) -> DocumentSummary</code>
+- <code title="get /document-summaries">client.documentSummaries.<a href="./src/resources/document-summaries.ts">list</a>({ ...params }) -> DocumentSummaryListResponse</code>
+- <code title="get /document-summaries/{id}/download">client.documentSummaries.<a href="./src/resources/document-summaries.ts">download</a>(id, { ...params }) -> Response</code>
+
+# Documents
 
 Types:
 
-- <code><a href="./src/resources/pets.ts">Category</a></code>
-- <code><a href="./src/resources/pets.ts">Pet</a></code>
-- <code><a href="./src/resources/pets.ts">PetFindByStatusResponse</a></code>
-- <code><a href="./src/resources/pets.ts">PetFindByTagsResponse</a></code>
-- <code><a href="./src/resources/pets.ts">PetUploadImageResponse</a></code>
+- <code><a href="./src/resources/documents.ts">Document</a></code>
+- <code><a href="./src/resources/documents.ts">DocumentList</a></code>
+- <code><a href="./src/resources/documents.ts">DocumentType</a></code>
+- <code><a href="./src/resources/documents.ts">DocumentGetSummariesResponse</a></code>
 
 Methods:
 
-- <code title="post /pet">client.pets.<a href="./src/resources/pets.ts">create</a>({ ...params }) -> Pet</code>
-- <code title="get /pet/{petId}">client.pets.<a href="./src/resources/pets.ts">retrieve</a>(petID) -> Pet</code>
-- <code title="put /pet">client.pets.<a href="./src/resources/pets.ts">update</a>({ ...params }) -> Pet</code>
-- <code title="delete /pet/{petId}">client.pets.<a href="./src/resources/pets.ts">delete</a>(petID) -> void</code>
-- <code title="get /pet/findByStatus">client.pets.<a href="./src/resources/pets.ts">findByStatus</a>({ ...params }) -> PetFindByStatusResponse</code>
-- <code title="get /pet/findByTags">client.pets.<a href="./src/resources/pets.ts">findByTags</a>({ ...params }) -> PetFindByTagsResponse</code>
-- <code title="post /pet/{petId}">client.pets.<a href="./src/resources/pets.ts">updateByID</a>(petID, { ...params }) -> void</code>
-- <code title="post /pet/{petId}/uploadImage">client.pets.<a href="./src/resources/pets.ts">uploadImage</a>(petID, image, { ...params }) -> PetUploadImageResponse</code>
+- <code title="post /documents">client.documents.<a href="./src/resources/documents.ts">create</a>({ ...params }) -> Document</code>
+- <code title="get /documents/{id}">client.documents.<a href="./src/resources/documents.ts">retrieve</a>(id) -> Document</code>
+- <code title="put /documents/{id}">client.documents.<a href="./src/resources/documents.ts">update</a>(id, { ...params }) -> Document</code>
+- <code title="get /documents">client.documents.<a href="./src/resources/documents.ts">list</a>({ ...params }) -> DocumentList</code>
+- <code title="delete /documents/{id}">client.documents.<a href="./src/resources/documents.ts">delete</a>(id) -> void</code>
+- <code title="get /documents/{id}/download">client.documents.<a href="./src/resources/documents.ts">download</a>(id) -> Response</code>
+- <code title="get /documents/{id}/document-summaries">client.documents.<a href="./src/resources/documents.ts">getSummaries</a>(id) -> DocumentGetSummariesResponse</code>
 
-# Store
+# Entities
 
 Types:
 
-- <code><a href="./src/resources/store/store.ts">StoreListInventoryResponse</a></code>
+- <code><a href="./src/resources/entities/entities.ts">Entity</a></code>
+- <code><a href="./src/resources/entities/entities.ts">EntityKind</a></code>
+- <code><a href="./src/resources/entities/entities.ts">EntityList</a></code>
 
 Methods:
 
-- <code title="get /store/inventory">client.store.<a href="./src/resources/store/store.ts">listInventory</a>() -> StoreListInventoryResponse</code>
+- <code title="get /entities/{id}">client.entities.<a href="./src/resources/entities/entities.ts">retrieve</a>(id) -> Entity</code>
+- <code title="get /entities">client.entities.<a href="./src/resources/entities/entities.ts">list</a>({ ...params }) -> EntityList</code>
+- <code title="delete /entities/{id}">client.entities.<a href="./src/resources/entities/entities.ts">delete</a>(id) -> void</code>
 
-## Orders
-
-Methods:
-
-- <code title="post /store/order">client.store.orders.<a href="./src/resources/store/orders.ts">create</a>({ ...params }) -> Order</code>
-- <code title="get /store/order/{orderId}">client.store.orders.<a href="./src/resources/store/orders.ts">retrieve</a>(orderID) -> Order</code>
-- <code title="delete /store/order/{orderId}">client.store.orders.<a href="./src/resources/store/orders.ts">delete</a>(orderID) -> void</code>
-
-# Users
+## Valuation
 
 Types:
 
-- <code><a href="./src/resources/users.ts">User</a></code>
-- <code><a href="./src/resources/users.ts">UserLoginResponse</a></code>
+- <code><a href="./src/resources/entities/valuation.ts">Valuation</a></code>
 
 Methods:
 
-- <code title="post /user">client.users.<a href="./src/resources/users.ts">create</a>({ ...params }) -> User</code>
-- <code title="get /user/{username}">client.users.<a href="./src/resources/users.ts">retrieve</a>(username) -> User</code>
-- <code title="put /user/{username}">client.users.<a href="./src/resources/users.ts">update</a>(existingUsername, { ...params }) -> void</code>
-- <code title="delete /user/{username}">client.users.<a href="./src/resources/users.ts">delete</a>(username) -> void</code>
-- <code title="post /user/createWithList">client.users.<a href="./src/resources/users.ts">createWithList</a>([ ...items ]) -> User</code>
-- <code title="get /user/login">client.users.<a href="./src/resources/users.ts">login</a>({ ...params }) -> string</code>
-- <code title="get /user/logout">client.users.<a href="./src/resources/users.ts">logout</a>() -> void</code>
+- <code title="post /entities/{id}/valuation">client.entities.valuation.<a href="./src/resources/entities/valuation.ts">create</a>(id, { ...params }) -> Valuation</code>
+- <code title="get /entities/{id}/valuation">client.entities.valuation.<a href="./src/resources/entities/valuation.ts">retrieve</a>(id) -> Valuation</code>
+
+# Households
+
+Types:
+
+- <code><a href="./src/resources/households.ts">Household</a></code>
+- <code><a href="./src/resources/households.ts">IndividualList</a></code>
+- <code><a href="./src/resources/households.ts">HouseholdListResponse</a></code>
+
+Methods:
+
+- <code title="post /households">client.households.<a href="./src/resources/households.ts">create</a>({ ...params }) -> Household</code>
+- <code title="get /households/{id}">client.households.<a href="./src/resources/households.ts">retrieve</a>(id) -> Household</code>
+- <code title="put /households/{id}">client.households.<a href="./src/resources/households.ts">update</a>(id, { ...params }) -> Household</code>
+- <code title="get /households">client.households.<a href="./src/resources/households.ts">list</a>({ ...params }) -> HouseholdListResponse</code>
+- <code title="delete /households/{id}">client.households.<a href="./src/resources/households.ts">delete</a>(id) -> void</code>
+- <code title="get /households/{id}/documents">client.households.<a href="./src/resources/households.ts">listDocuments</a>(id, { ...params }) -> DocumentList</code>
+- <code title="get /households/{id}/entities">client.households.<a href="./src/resources/households.ts">listEntities</a>(id, { ...params }) -> EntityList</code>
+- <code title="get /households/{id}/individuals">client.households.<a href="./src/resources/households.ts">listIndividuals</a>(id, { ...params }) -> IndividualList</code>
+
+# Individuals
+
+Types:
+
+- <code><a href="./src/resources/individuals.ts">Individual</a></code>
+
+Methods:
+
+- <code title="post /individuals">client.individuals.<a href="./src/resources/individuals.ts">create</a>({ ...params }) -> Individual</code>
+- <code title="get /individuals/{id}">client.individuals.<a href="./src/resources/individuals.ts">retrieve</a>(id) -> Individual</code>
+- <code title="put /individuals/{id}">client.individuals.<a href="./src/resources/individuals.ts">update</a>(id, { ...params }) -> Individual</code>
+- <code title="get /individuals">client.individuals.<a href="./src/resources/individuals.ts">list</a>({ ...params }) -> IndividualList</code>
+- <code title="delete /individuals/{id}">client.individuals.<a href="./src/resources/individuals.ts">delete</a>(id) -> void</code>
