@@ -310,7 +310,7 @@ export class Luminary {
     if (!this.oauth2AuthState) {
       this.oauth2AuthState = {
         promise: this.fetch(
-          this.buildURL('https://auth.withluminary.com/oauth/token', { grant_type: 'client_credentials' }),
+          this.buildURL('https://auth.withluminary.com/oauth2/token', { grant_type: 'client_credentials' }),
           {
             method: 'POST',
             headers: {
