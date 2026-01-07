@@ -80,7 +80,12 @@ describe('resource documents', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.documents.list(
-        { household_id: 'household_id', limit: 1, offset: 0, type: 'GRAT_DESIGN_SUMMARY' },
+        {
+          household_id: 'household_id',
+          limit: 1,
+          offset: 0,
+          type: 'GRAT_DESIGN_SUMMARY',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Luminary.NotFoundError);

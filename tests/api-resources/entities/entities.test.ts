@@ -38,7 +38,12 @@ describe('resource entities', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.entities.list(
-        { household_id: 'household_id', kind: 'REVOCABLE_TRUST', limit: 1, offset: 0 },
+        {
+          household_id: 'household_id',
+          kind: 'REVOCABLE_TRUST',
+          limit: 1,
+          offset: 0,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Luminary.NotFoundError);
