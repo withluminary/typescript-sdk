@@ -13,17 +13,19 @@ import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
 import { VERSION } from './version';
 import * as Errors from './core/error';
+import * as Pagination from './core/pagination';
+import { AbstractPage, type CursorPaginationParams, CursorPaginationResponse } from './core/pagination';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
   DocumentSummaries,
+  DocumentSummariesCursorPagination,
   DocumentSummary,
   DocumentSummaryDownloadParams,
   DocumentSummaryEntryMode,
   DocumentSummaryFormat,
   DocumentSummaryListParams,
-  DocumentSummaryListResponse,
   DocumentSummaryUpdateParams,
   PageInfo,
 } from './resources/document-summaries';
@@ -36,6 +38,7 @@ import {
   DocumentType,
   DocumentUpdateParams,
   Documents,
+  DocumentsCursorPagination,
 } from './resources/documents';
 import {
   Household,
@@ -44,9 +47,9 @@ import {
   HouseholdListEntitiesParams,
   HouseholdListIndividualsParams,
   HouseholdListParams,
-  HouseholdListResponse,
   HouseholdUpdateParams,
   Households,
+  HouseholdsCursorPagination,
   IndividualList,
 } from './resources/households';
 import {
@@ -55,9 +58,17 @@ import {
   IndividualListParams,
   IndividualUpdateParams,
   Individuals,
+  IndividualsCursorPagination,
 } from './resources/individuals';
-import { User, UserListParams, UserListResponse, Users } from './resources/users';
-import { Entities, Entity, EntityKind, EntityList, EntityListParams } from './resources/entities/entities';
+import { User, UserListParams, Users, UsersCursorPagination } from './resources/users';
+import {
+  Entities,
+  EntitiesCursorPagination,
+  Entity,
+  EntityKind,
+  EntityList,
+  EntityListParams,
+} from './resources/entities/entities';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -617,6 +628,25 @@ export class Luminary {
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
 
+  getAPIList<Item, PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>>(
+    path: string,
+    Page: new (...args: any[]) => PageClass,
+    opts?: RequestOptions,
+  ): Pagination.PagePromise<PageClass, Item> {
+    return this.requestAPIList(Page, { method: 'get', path, ...opts });
+  }
+
+  requestAPIList<
+    Item = unknown,
+    PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>,
+  >(
+    Page: new (...args: ConstructorParameters<typeof Pagination.AbstractPage>) => PageClass,
+    options: FinalRequestOptions,
+  ): Pagination.PagePromise<PageClass, Item> {
+    const request = this.makeRequest(options, null, undefined);
+    return new Pagination.PagePromise<PageClass, Item>(this as any as Luminary, request, Page);
+  }
+
   async fetchWithTimeout(
     url: RequestInfo,
     init: RequestInit | undefined,
@@ -874,13 +904,19 @@ Luminary.Users = Users;
 export declare namespace Luminary {
   export type RequestOptions = Opts.RequestOptions;
 
+  export import CursorPagination = Pagination.CursorPagination;
+  export {
+    type CursorPaginationParams as CursorPaginationParams,
+    type CursorPaginationResponse as CursorPaginationResponse,
+  };
+
   export {
     DocumentSummaries as DocumentSummaries,
     type DocumentSummary as DocumentSummary,
     type DocumentSummaryEntryMode as DocumentSummaryEntryMode,
     type DocumentSummaryFormat as DocumentSummaryFormat,
     type PageInfo as PageInfo,
-    type DocumentSummaryListResponse as DocumentSummaryListResponse,
+    type DocumentSummariesCursorPagination as DocumentSummariesCursorPagination,
     type DocumentSummaryUpdateParams as DocumentSummaryUpdateParams,
     type DocumentSummaryListParams as DocumentSummaryListParams,
     type DocumentSummaryDownloadParams as DocumentSummaryDownloadParams,
@@ -892,6 +928,7 @@ export declare namespace Luminary {
     type DocumentList as DocumentList,
     type DocumentType as DocumentType,
     type DocumentGetSummariesResponse as DocumentGetSummariesResponse,
+    type DocumentsCursorPagination as DocumentsCursorPagination,
     type DocumentCreateParams as DocumentCreateParams,
     type DocumentUpdateParams as DocumentUpdateParams,
     type DocumentListParams as DocumentListParams,
@@ -902,6 +939,7 @@ export declare namespace Luminary {
     type Entity as Entity,
     type EntityKind as EntityKind,
     type EntityList as EntityList,
+    type EntitiesCursorPagination as EntitiesCursorPagination,
     type EntityListParams as EntityListParams,
   };
 
@@ -909,7 +947,7 @@ export declare namespace Luminary {
     Households as Households,
     type Household as Household,
     type IndividualList as IndividualList,
-    type HouseholdListResponse as HouseholdListResponse,
+    type HouseholdsCursorPagination as HouseholdsCursorPagination,
     type HouseholdCreateParams as HouseholdCreateParams,
     type HouseholdUpdateParams as HouseholdUpdateParams,
     type HouseholdListParams as HouseholdListParams,
@@ -921,6 +959,7 @@ export declare namespace Luminary {
   export {
     Individuals as Individuals,
     type Individual as Individual,
+    type IndividualsCursorPagination as IndividualsCursorPagination,
     type IndividualCreateParams as IndividualCreateParams,
     type IndividualUpdateParams as IndividualUpdateParams,
     type IndividualListParams as IndividualListParams,
@@ -929,7 +968,7 @@ export declare namespace Luminary {
   export {
     Users as Users,
     type User as User,
-    type UserListResponse as UserListResponse,
+    type UsersCursorPagination as UsersCursorPagination,
     type UserListParams as UserListParams,
   };
 }

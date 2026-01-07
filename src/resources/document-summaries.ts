@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../core/pagination';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -31,8 +32,11 @@ export class DocumentSummaries extends APIResource {
   list(
     query: DocumentSummaryListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<DocumentSummaryListResponse> {
-    return this._client.get('/document-summaries', { query, ...options });
+  ): PagePromise<DocumentSummariesCursorPagination, DocumentSummary> {
+    return this._client.getAPIList('/document-summaries', CursorPagination<DocumentSummary>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -51,6 +55,8 @@ export class DocumentSummaries extends APIResource {
     });
   }
 }
+
+export type DocumentSummariesCursorPagination = CursorPagination<DocumentSummary>;
 
 export interface DocumentSummary {
   /**
@@ -131,17 +137,6 @@ export interface PageInfo {
   start_cursor?: string | null;
 }
 
-export interface DocumentSummaryListResponse {
-  data: Array<DocumentSummary>;
-
-  page_info: PageInfo;
-
-  /**
-   * Total number of items matching the query (across all pages)
-   */
-  total_count: number;
-}
-
 export interface DocumentSummaryUpdateParams {
   /**
    * Display name for the summary
@@ -164,17 +159,7 @@ export interface DocumentSummaryUpdateParams {
   summary_format?: DocumentSummaryFormat;
 }
 
-export interface DocumentSummaryListParams {
-  /**
-   * Cursor for forward pagination. Returns items after this cursor.
-   */
-  after?: string;
-
-  /**
-   * Cursor for backward pagination. Returns items before this cursor.
-   */
-  before?: string;
-
+export interface DocumentSummaryListParams extends CursorPaginationParams {
   /**
    * Filter summaries by document ID
    */
@@ -184,11 +169,6 @@ export interface DocumentSummaryListParams {
    * Filter summaries by household ID
    */
   household_id?: string;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
 }
 
 export interface DocumentSummaryDownloadParams {
@@ -204,7 +184,7 @@ export declare namespace DocumentSummaries {
     type DocumentSummaryEntryMode as DocumentSummaryEntryMode,
     type DocumentSummaryFormat as DocumentSummaryFormat,
     type PageInfo as PageInfo,
-    type DocumentSummaryListResponse as DocumentSummaryListResponse,
+    type DocumentSummariesCursorPagination as DocumentSummariesCursorPagination,
     type DocumentSummaryUpdateParams as DocumentSummaryUpdateParams,
     type DocumentSummaryListParams as DocumentSummaryListParams,
     type DocumentSummaryDownloadParams as DocumentSummaryDownloadParams,

@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as DocumentSummariesAPI from './document-summaries';
 import { APIPromise } from '../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -20,10 +20,12 @@ export class Users extends APIResource {
   list(
     query: UserListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<UserListResponse> {
-    return this._client.get('/users', { query, ...options });
+  ): PagePromise<UsersCursorPagination, User> {
+    return this._client.getAPIList('/users', CursorPagination<User>, { query, ...options });
   }
 }
+
+export type UsersCursorPagination = CursorPagination<User>;
 
 export interface User {
   /**
@@ -57,38 +59,12 @@ export interface User {
   updated_at: string;
 }
 
-export interface UserListResponse {
-  data: Array<User>;
-
-  page_info: DocumentSummariesAPI.PageInfo;
-
-  /**
-   * Total number of items matching the query (across all pages)
-   */
-  total_count: number;
-}
-
-export interface UserListParams {
-  /**
-   * Cursor for forward pagination. Returns items after this cursor.
-   */
-  after?: string;
-
-  /**
-   * Cursor for backward pagination. Returns items before this cursor.
-   */
-  before?: string;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
-}
+export interface UserListParams extends CursorPaginationParams {}
 
 export declare namespace Users {
   export {
     type User as User,
-    type UserListResponse as UserListResponse,
+    type UsersCursorPagination as UsersCursorPagination,
     type UserListParams as UserListParams,
   };
 }
