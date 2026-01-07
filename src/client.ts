@@ -100,6 +100,11 @@ export interface ClientOptions {
   subdomain?: string | undefined;
 
   /**
+   * Override the authentication domain.
+   */
+  authDomain?: string | undefined;
+
+  /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
    * Defaults to process.env['LUMINARY_BASE_URL'].
@@ -175,6 +180,7 @@ export class Luminary {
   clientID: string;
   clientSecret: string;
   subdomain: string;
+  authDomain: string;
 
   baseURL: string;
   maxRetries: number;
@@ -194,6 +200,7 @@ export class Luminary {
    * @param {string | undefined} [opts.clientID=process.env['CLIENT_ID'] ?? undefined]
    * @param {string | undefined} [opts.clientSecret=process.env['CLIENT_SECRET'] ?? undefined]
    * @param {string | undefined} [opts.subdomain=process.env['WITHLUMINARY_SUBDOMAIN'] ?? lum]
+   * @param {string | undefined} [opts.authDomain=process.env['WITHLUMINARY_AUTH_DOMAIN'] ?? https://auth.withluminary.com/]
    * @param {string} [opts.baseURL=process.env['LUMINARY_BASE_URL'] ?? https://{subdomain}.withluminary.com/api/public/v1] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -207,6 +214,7 @@ export class Luminary {
     clientID = readEnv('CLIENT_ID'),
     clientSecret = readEnv('CLIENT_SECRET'),
     subdomain = readEnv('WITHLUMINARY_SUBDOMAIN') ?? 'lum',
+    authDomain = readEnv('WITHLUMINARY_AUTH_DOMAIN') ?? 'https://auth.withluminary.com/',
     ...opts
   }: ClientOptions = {}) {
     if (clientID === undefined) {
@@ -224,6 +232,7 @@ export class Luminary {
       clientID,
       clientSecret,
       subdomain,
+      authDomain,
       ...opts,
       baseURL: baseURL || `https://${subdomain}.withluminary.com/api/public/v1`,
     };
@@ -248,6 +257,7 @@ export class Luminary {
     this.clientID = clientID;
     this.clientSecret = clientSecret;
     this.subdomain = subdomain;
+    this.authDomain = authDomain;
   }
 
   /**
@@ -266,6 +276,7 @@ export class Luminary {
       clientID: this.clientID,
       clientSecret: this.clientSecret,
       subdomain: this.subdomain,
+      authDomain: this.authDomain,
       ...options,
     });
     client.oauth2AuthState = this.oauth2AuthState;
@@ -322,7 +333,7 @@ export class Luminary {
     if (!this.oauth2AuthState) {
       this.oauth2AuthState = {
         promise: this.fetch(
-          this.buildURL('https://auth.withluminary.com/oauth2/token', { grant_type: 'client_credentials' }),
+          this.buildURL('{auth_domain}/oauth2/token', { grant_type: 'client_credentials' }),
           {
             method: 'POST',
             headers: {
