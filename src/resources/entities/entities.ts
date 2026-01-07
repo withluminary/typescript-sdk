@@ -5,6 +5,7 @@ import * as DocumentSummariesAPI from '../document-summaries';
 import * as ValuationAPI from './valuation';
 import { Valuation, ValuationCreateParams, ValuationResource } from './valuation';
 import { APIPromise } from '../../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../../core/pagination';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -30,11 +31,17 @@ export class Entities extends APIResource {
    *
    * @example
    * ```ts
-   * const entityList = await client.entities.list();
+   * // Automatically fetches more pages as needed.
+   * for await (const entity of client.entities.list()) {
+   *   // ...
+   * }
    * ```
    */
-  list(query: EntityListParams | null | undefined = {}, options?: RequestOptions): APIPromise<EntityList> {
-    return this._client.get('/entities', { query, ...options });
+  list(
+    query: EntityListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<EntitiesCursorPagination, Entity> {
+    return this._client.getAPIList('/entities', CursorPagination<Entity>, { query, ...options });
   }
 
   /**
@@ -52,6 +59,8 @@ export class Entities extends APIResource {
     });
   }
 }
+
+export type EntitiesCursorPagination = CursorPagination<Entity>;
 
 export interface Entity {
   /**
@@ -138,17 +147,7 @@ export interface EntityList {
   total_count: number;
 }
 
-export interface EntityListParams {
-  /**
-   * Cursor for forward pagination. Returns items after this cursor.
-   */
-  after?: string;
-
-  /**
-   * Cursor for backward pagination. Returns items before this cursor.
-   */
-  before?: string;
-
+export interface EntityListParams extends CursorPaginationParams {
   /**
    * Filter entities by household ID
    */
@@ -158,11 +157,6 @@ export interface EntityListParams {
    * Filter by entity kind/type
    */
   kind?: EntityKind;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
 }
 
 Entities.ValuationResource = ValuationResource;
@@ -172,6 +166,7 @@ export declare namespace Entities {
     type Entity as Entity,
     type EntityKind as EntityKind,
     type EntityList as EntityList,
+    type EntitiesCursorPagination as EntitiesCursorPagination,
     type EntityListParams as EntityListParams,
   };
 

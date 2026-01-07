@@ -27,9 +27,10 @@ import Luminary from 'withluminary';
 
 const client = new Luminary();
 
-const households = await client.households.list();
+const page = await client.households.list();
+const household = page.data[0];
 
-console.log(households.data);
+console.log(household.id);
 ```
 
 ### Request & Response types
@@ -42,7 +43,7 @@ import Luminary from 'withluminary';
 
 const client = new Luminary();
 
-const households: Luminary.HouseholdListResponse = await client.households.list();
+const [household]: [Luminary.Household] = await client.households.list();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -109,7 +110,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const households = await client.households.list().catch(async (err) => {
+const page = await client.households.list().catch(async (err) => {
   if (err instanceof Luminary.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -175,6 +176,37 @@ On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
 
+## Auto-pagination
+
+List methods in the Luminary API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllHouseholds(params) {
+  const allHouseholds = [];
+  // Automatically fetches more pages as needed.
+  for await (const household of client.households.list()) {
+    allHouseholds.push(household);
+  }
+  return allHouseholds;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.households.list();
+for (const household of page.data) {
+  console.log(household);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
+
 ## Advanced Usage
 
 ### Accessing raw Response data (e.g., headers)
@@ -193,9 +225,11 @@ const response = await client.households.list().asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: households, response: raw } = await client.households.list().withResponse();
+const { data: page, response: raw } = await client.households.list().withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(households.data);
+for await (const household of page) {
+  console.log(household.id);
+}
 ```
 
 ### Logging

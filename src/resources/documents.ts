@@ -3,6 +3,7 @@
 import { APIResource } from '../core/resource';
 import * as DocumentSummariesAPI from './document-summaries';
 import { APIPromise } from '../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../core/pagination';
 import { type Uploadable } from '../core/uploads';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
@@ -56,14 +57,17 @@ export class Documents extends APIResource {
    *
    * @example
    * ```ts
-   * const documentList = await client.documents.list();
+   * // Automatically fetches more pages as needed.
+   * for await (const document of client.documents.list()) {
+   *   // ...
+   * }
    * ```
    */
   list(
     query: DocumentListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<DocumentList> {
-    return this._client.get('/documents', { query, ...options });
+  ): PagePromise<DocumentsCursorPagination, Document> {
+    return this._client.getAPIList('/documents', CursorPagination<Document>, { query, ...options });
   }
 
   /**
@@ -112,6 +116,8 @@ export class Documents extends APIResource {
     return this._client.get(path`/documents/${id}/document-summaries`, options);
   }
 }
+
+export type DocumentsCursorPagination = CursorPagination<Document>;
 
 export interface Document {
   /**
@@ -287,26 +293,11 @@ export interface DocumentUpdateParams {
   type?: DocumentType;
 }
 
-export interface DocumentListParams {
-  /**
-   * Cursor for forward pagination. Returns items after this cursor.
-   */
-  after?: string;
-
-  /**
-   * Cursor for backward pagination. Returns items before this cursor.
-   */
-  before?: string;
-
+export interface DocumentListParams extends CursorPaginationParams {
   /**
    * Filter documents by household ID
    */
   household_id?: string;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
 
   /**
    * Filter by document type
@@ -320,6 +311,7 @@ export declare namespace Documents {
     type DocumentList as DocumentList,
     type DocumentType as DocumentType,
     type DocumentGetSummariesResponse as DocumentGetSummariesResponse,
+    type DocumentsCursorPagination as DocumentsCursorPagination,
     type DocumentCreateParams as DocumentCreateParams,
     type DocumentUpdateParams as DocumentUpdateParams,
     type DocumentListParams as DocumentListParams,

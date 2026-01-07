@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as HouseholdsAPI from './households';
 import { APIPromise } from '../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../core/pagination';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -54,14 +54,17 @@ export class Individuals extends APIResource {
    *
    * @example
    * ```ts
-   * const individualList = await client.individuals.list();
+   * // Automatically fetches more pages as needed.
+   * for await (const individual of client.individuals.list()) {
+   *   // ...
+   * }
    * ```
    */
   list(
     query: IndividualListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<HouseholdsAPI.IndividualList> {
-    return this._client.get('/individuals', { query, ...options });
+  ): PagePromise<IndividualsCursorPagination, Individual> {
+    return this._client.getAPIList('/individuals', CursorPagination<Individual>, { query, ...options });
   }
 
   /**
@@ -79,6 +82,8 @@ export class Individuals extends APIResource {
     });
   }
 }
+
+export type IndividualsCursorPagination = CursorPagination<Individual>;
 
 export interface Individual {
   /**
@@ -402,17 +407,7 @@ export interface IndividualUpdateParams {
   suffix?: string | null;
 }
 
-export interface IndividualListParams {
-  /**
-   * Cursor for forward pagination. Returns items after this cursor.
-   */
-  after?: string;
-
-  /**
-   * Cursor for backward pagination. Returns items before this cursor.
-   */
-  before?: string;
-
+export interface IndividualListParams extends CursorPaginationParams {
   /**
    * Filter individuals by household ID
    */
@@ -422,16 +417,12 @@ export interface IndividualListParams {
    * Filter by primary client status
    */
   is_primary?: boolean;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
 }
 
 export declare namespace Individuals {
   export {
     type Individual as Individual,
+    type IndividualsCursorPagination as IndividualsCursorPagination,
     type IndividualCreateParams as IndividualCreateParams,
     type IndividualUpdateParams as IndividualUpdateParams,
     type IndividualListParams as IndividualListParams,

@@ -3,9 +3,13 @@
 import { APIResource } from '../core/resource';
 import * as DocumentSummariesAPI from './document-summaries';
 import * as DocumentsAPI from './documents';
+import { DocumentsCursorPagination } from './documents';
 import * as IndividualsAPI from './individuals';
+import { IndividualsCursorPagination } from './individuals';
 import * as EntitiesAPI from './entities/entities';
+import { EntitiesCursorPagination } from './entities/entities';
 import { APIPromise } from '../core/api-promise';
+import { CursorPagination, type CursorPaginationParams, PagePromise } from '../core/pagination';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -55,14 +59,17 @@ export class Households extends APIResource {
    *
    * @example
    * ```ts
-   * const households = await client.households.list();
+   * // Automatically fetches more pages as needed.
+   * for await (const household of client.households.list()) {
+   *   // ...
+   * }
    * ```
    */
   list(
     query: HouseholdListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<HouseholdListResponse> {
-    return this._client.get('/households', { query, ...options });
+  ): PagePromise<HouseholdsCursorPagination, Household> {
+    return this._client.getAPIList('/households', CursorPagination<Household>, { query, ...options });
   }
 
   /**
@@ -85,17 +92,24 @@ export class Households extends APIResource {
    *
    * @example
    * ```ts
-   * const documentList = await client.households.listDocuments(
+   * // Automatically fetches more pages as needed.
+   * for await (const document of client.households.listDocuments(
    *   'id',
-   * );
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   listDocuments(
     id: string,
     query: HouseholdListDocumentsParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<DocumentsAPI.DocumentList> {
-    return this._client.get(path`/households/${id}/documents`, { query, ...options });
+  ): PagePromise<DocumentsCursorPagination, DocumentsAPI.Document> {
+    return this._client.getAPIList(
+      path`/households/${id}/documents`,
+      CursorPagination<DocumentsAPI.Document>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -103,17 +117,23 @@ export class Households extends APIResource {
    *
    * @example
    * ```ts
-   * const entityList = await client.households.listEntities(
+   * // Automatically fetches more pages as needed.
+   * for await (const entity of client.households.listEntities(
    *   'id',
-   * );
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   listEntities(
     id: string,
     query: HouseholdListEntitiesParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<EntitiesAPI.EntityList> {
-    return this._client.get(path`/households/${id}/entities`, { query, ...options });
+  ): PagePromise<EntitiesCursorPagination, EntitiesAPI.Entity> {
+    return this._client.getAPIList(path`/households/${id}/entities`, CursorPagination<EntitiesAPI.Entity>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -122,18 +142,28 @@ export class Households extends APIResource {
    *
    * @example
    * ```ts
-   * const individualList =
-   *   await client.households.listIndividuals('id');
+   * // Automatically fetches more pages as needed.
+   * for await (const individual of client.households.listIndividuals(
+   *   'id',
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   listIndividuals(
     id: string,
     query: HouseholdListIndividualsParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<IndividualList> {
-    return this._client.get(path`/households/${id}/individuals`, { query, ...options });
+  ): PagePromise<IndividualsCursorPagination, IndividualsAPI.Individual> {
+    return this._client.getAPIList(
+      path`/households/${id}/individuals`,
+      CursorPagination<IndividualsAPI.Individual>,
+      { query, ...options },
+    );
   }
 }
+
+export type HouseholdsCursorPagination = CursorPagination<Household>;
 
 export interface Household {
   /**
@@ -174,17 +204,6 @@ export interface Household {
 
 export interface IndividualList {
   data: Array<IndividualsAPI.Individual>;
-
-  page_info: DocumentSummariesAPI.PageInfo;
-
-  /**
-   * Total number of items matching the query (across all pages)
-   */
-  total_count: number;
-}
-
-export interface HouseholdListResponse {
-  data: Array<Household>;
 
   page_info: DocumentSummariesAPI.PageInfo;
 
@@ -308,94 +327,34 @@ export interface HouseholdUpdateParams {
   primary_relationship_owner_id?: string;
 }
 
-export interface HouseholdListParams {
-  /**
-   * Cursor for forward pagination. Returns items after this cursor.
-   */
-  after?: string;
+export interface HouseholdListParams extends CursorPaginationParams {}
 
-  /**
-   * Cursor for backward pagination. Returns items before this cursor.
-   */
-  before?: string;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
-}
-
-export interface HouseholdListDocumentsParams {
-  /**
-   * Cursor for forward pagination. Returns items after this cursor.
-   */
-  after?: string;
-
-  /**
-   * Cursor for backward pagination. Returns items before this cursor.
-   */
-  before?: string;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
-
+export interface HouseholdListDocumentsParams extends CursorPaginationParams {
   /**
    * Filter by document type
    */
   type?: DocumentsAPI.DocumentType;
 }
 
-export interface HouseholdListEntitiesParams {
-  /**
-   * Cursor for forward pagination. Returns items after this cursor.
-   */
-  after?: string;
-
-  /**
-   * Cursor for backward pagination. Returns items before this cursor.
-   */
-  before?: string;
-
+export interface HouseholdListEntitiesParams extends CursorPaginationParams {
   /**
    * Filter by entity kind/type
    */
   kind?: EntitiesAPI.EntityKind;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
 }
 
-export interface HouseholdListIndividualsParams {
-  /**
-   * Cursor for forward pagination. Returns items after this cursor.
-   */
-  after?: string;
-
-  /**
-   * Cursor for backward pagination. Returns items before this cursor.
-   */
-  before?: string;
-
+export interface HouseholdListIndividualsParams extends CursorPaginationParams {
   /**
    * Filter by primary client status
    */
   is_primary?: boolean;
-
-  /**
-   * Maximum number of items to return
-   */
-  limit?: number;
 }
 
 export declare namespace Households {
   export {
     type Household as Household,
     type IndividualList as IndividualList,
-    type HouseholdListResponse as HouseholdListResponse,
+    type HouseholdsCursorPagination as HouseholdsCursorPagination,
     type HouseholdCreateParams as HouseholdCreateParams,
     type HouseholdUpdateParams as HouseholdUpdateParams,
     type HouseholdListParams as HouseholdListParams,
@@ -404,3 +363,5 @@ export declare namespace Households {
     type HouseholdListIndividualsParams as HouseholdListIndividualsParams,
   };
 }
+
+export { type DocumentsCursorPagination, type EntitiesCursorPagination, type IndividualsCursorPagination };
