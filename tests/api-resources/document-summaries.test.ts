@@ -50,7 +50,12 @@ describe('resource documentSummaries', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.documentSummaries.list(
-        { document_id: 'document_id', household_id: 'household_id', limit: 1, offset: 0 },
+        {
+          document_id: 'document_id',
+          household_id: 'household_id',
+          limit: 1,
+          offset: 0,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Luminary.NotFoundError);

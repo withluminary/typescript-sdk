@@ -125,7 +125,11 @@ describe('resource households', () => {
     await expect(
       client.households.listDocuments(
         'id',
-        { limit: 1, offset: 0, type: 'GRAT_DESIGN_SUMMARY' },
+        {
+          limit: 1,
+          offset: 0,
+          type: 'GRAT_DESIGN_SUMMARY',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Luminary.NotFoundError);
@@ -149,7 +153,11 @@ describe('resource households', () => {
     await expect(
       client.households.listEntities(
         'id',
-        { kind: 'REVOCABLE_TRUST', limit: 1, offset: 0 },
+        {
+          kind: 'REVOCABLE_TRUST',
+          limit: 1,
+          offset: 0,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Luminary.NotFoundError);
@@ -173,7 +181,11 @@ describe('resource households', () => {
     await expect(
       client.households.listIndividuals(
         'id',
-        { is_primary: true, limit: 1, offset: 0 },
+        {
+          is_primary: true,
+          limit: 1,
+          offset: 0,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Luminary.NotFoundError);

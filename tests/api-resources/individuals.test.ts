@@ -91,7 +91,12 @@ describe('resource individuals', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.individuals.list(
-        { household_id: 'household_id', is_primary: true, limit: 1, offset: 0 },
+        {
+          household_id: 'household_id',
+          is_primary: true,
+          limit: 1,
+          offset: 0,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Luminary.NotFoundError);
