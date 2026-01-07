@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as DocumentSummariesAPI from './document-summaries';
 import * as DocumentsAPI from './documents';
 import * as IndividualsAPI from './individuals';
 import * as EntitiesAPI from './entities/entities';
@@ -174,71 +175,23 @@ export interface Household {
 export interface IndividualList {
   data: Array<IndividualsAPI.Individual>;
 
-  page_info: IndividualList.PageInfo;
+  page_info: DocumentSummariesAPI.PageInfo;
 
   /**
    * Total number of items matching the query (across all pages)
    */
   total_count: number;
-}
-
-export namespace IndividualList {
-  export interface PageInfo {
-    /**
-     * When paginating forwards, are there more items?
-     */
-    has_next_page: boolean;
-
-    /**
-     * When paginating backwards, are there more items?
-     */
-    has_previous_page: boolean;
-
-    /**
-     * Cursor pointing to the last item in the current page
-     */
-    end_cursor?: string | null;
-
-    /**
-     * Cursor pointing to the first item in the current page
-     */
-    start_cursor?: string | null;
-  }
 }
 
 export interface HouseholdListResponse {
   data: Array<Household>;
 
-  page_info: HouseholdListResponse.PageInfo;
+  page_info: DocumentSummariesAPI.PageInfo;
 
   /**
    * Total number of items matching the query (across all pages)
    */
   total_count: number;
-}
-
-export namespace HouseholdListResponse {
-  export interface PageInfo {
-    /**
-     * When paginating forwards, are there more items?
-     */
-    has_next_page: boolean;
-
-    /**
-     * When paginating backwards, are there more items?
-     */
-    has_previous_page: boolean;
-
-    /**
-     * Cursor pointing to the last item in the current page
-     */
-    end_cursor?: string | null;
-
-    /**
-     * Cursor pointing to the first item in the current page
-     */
-    start_cursor?: string | null;
-  }
 }
 
 export interface HouseholdCreateParams {

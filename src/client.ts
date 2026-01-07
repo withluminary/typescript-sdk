@@ -25,6 +25,7 @@ import {
   DocumentSummaryListParams,
   DocumentSummaryListResponse,
   DocumentSummaryUpdateParams,
+  PageInfo,
 } from './resources/document-summaries';
 import {
   Document,
@@ -55,7 +56,7 @@ import {
   IndividualUpdateParams,
   Individuals,
 } from './resources/individuals';
-import { UserListParams, UserListResponse, UserRetrieveResponse, Users } from './resources/users';
+import { User, UserListParams, UserListResponse, Users } from './resources/users';
 import { Entities, Entity, EntityKind, EntityList, EntityListParams } from './resources/entities/entities';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -878,6 +879,7 @@ export declare namespace Luminary {
     type DocumentSummary as DocumentSummary,
     type DocumentSummaryEntryMode as DocumentSummaryEntryMode,
     type DocumentSummaryFormat as DocumentSummaryFormat,
+    type PageInfo as PageInfo,
     type DocumentSummaryListResponse as DocumentSummaryListResponse,
     type DocumentSummaryUpdateParams as DocumentSummaryUpdateParams,
     type DocumentSummaryListParams as DocumentSummaryListParams,
@@ -926,7 +928,7 @@ export declare namespace Luminary {
 
   export {
     Users as Users,
-    type UserRetrieveResponse as UserRetrieveResponse,
+    type User as User,
     type UserListResponse as UserListResponse,
     type UserListParams as UserListParams,
   };

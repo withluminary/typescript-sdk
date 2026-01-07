@@ -163,36 +163,12 @@ export interface Document {
 export interface DocumentList {
   data: Array<Document>;
 
-  page_info: DocumentList.PageInfo;
+  page_info: DocumentSummariesAPI.PageInfo;
 
   /**
    * Total number of items matching the query (across all pages)
    */
   total_count: number;
-}
-
-export namespace DocumentList {
-  export interface PageInfo {
-    /**
-     * When paginating forwards, are there more items?
-     */
-    has_next_page: boolean;
-
-    /**
-     * When paginating backwards, are there more items?
-     */
-    has_previous_page: boolean;
-
-    /**
-     * Cursor pointing to the last item in the current page
-     */
-    end_cursor?: string | null;
-
-    /**
-     * Cursor pointing to the first item in the current page
-     */
-    start_cursor?: string | null;
-  }
 }
 
 /**

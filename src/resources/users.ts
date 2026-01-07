@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as DocumentSummariesAPI from './document-summaries';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -9,7 +10,7 @@ export class Users extends APIResource {
   /**
    * Retrieve detailed information about a specific user
    */
-  retrieve(id: string, options?: RequestOptions): APIPromise<UserRetrieveResponse> {
+  retrieve(id: string, options?: RequestOptions): APIPromise<User> {
     return this._client.get(path`/users/${id}`, options);
   }
 
@@ -24,7 +25,7 @@ export class Users extends APIResource {
   }
 }
 
-export interface UserRetrieveResponse {
+export interface User {
   /**
    * Unique identifier with user\_ prefix
    */
@@ -57,70 +58,14 @@ export interface UserRetrieveResponse {
 }
 
 export interface UserListResponse {
-  data: Array<UserListResponse.Data>;
+  data: Array<User>;
 
-  page_info: UserListResponse.PageInfo;
+  page_info: DocumentSummariesAPI.PageInfo;
 
   /**
    * Total number of items matching the query (across all pages)
    */
   total_count: number;
-}
-
-export namespace UserListResponse {
-  export interface Data {
-    /**
-     * Unique identifier with user\_ prefix
-     */
-    id: string;
-
-    /**
-     * Timestamp when the user was created
-     */
-    created_at: string;
-
-    /**
-     * Email address of the user
-     */
-    email: string;
-
-    /**
-     * First name of the user
-     */
-    first_name: string;
-
-    /**
-     * Last name of the user
-     */
-    last_name: string;
-
-    /**
-     * Timestamp when the user was last updated
-     */
-    updated_at: string;
-  }
-
-  export interface PageInfo {
-    /**
-     * When paginating forwards, are there more items?
-     */
-    has_next_page: boolean;
-
-    /**
-     * When paginating backwards, are there more items?
-     */
-    has_previous_page: boolean;
-
-    /**
-     * Cursor pointing to the last item in the current page
-     */
-    end_cursor?: string | null;
-
-    /**
-     * Cursor pointing to the first item in the current page
-     */
-    start_cursor?: string | null;
-  }
 }
 
 export interface UserListParams {
@@ -142,7 +87,7 @@ export interface UserListParams {
 
 export declare namespace Users {
   export {
-    type UserRetrieveResponse as UserRetrieveResponse,
+    type User as User,
     type UserListResponse as UserListResponse,
     type UserListParams as UserListParams,
   };
