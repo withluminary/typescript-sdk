@@ -109,39 +109,37 @@ export type DocumentSummaryEntryMode = 'AI_AUTO' | 'USER';
  */
 export type DocumentSummaryFormat = 'MARKDOWN' | 'PLAIN_TEXT';
 
+export interface PageInfo {
+  /**
+   * When paginating forwards, are there more items?
+   */
+  has_next_page: boolean;
+
+  /**
+   * When paginating backwards, are there more items?
+   */
+  has_previous_page: boolean;
+
+  /**
+   * Cursor pointing to the last item in the current page
+   */
+  end_cursor?: string | null;
+
+  /**
+   * Cursor pointing to the first item in the current page
+   */
+  start_cursor?: string | null;
+}
+
 export interface DocumentSummaryListResponse {
   data: Array<DocumentSummary>;
 
-  page_info: DocumentSummaryListResponse.PageInfo;
+  page_info: PageInfo;
 
   /**
    * Total number of items matching the query (across all pages)
    */
   total_count: number;
-}
-
-export namespace DocumentSummaryListResponse {
-  export interface PageInfo {
-    /**
-     * When paginating forwards, are there more items?
-     */
-    has_next_page: boolean;
-
-    /**
-     * When paginating backwards, are there more items?
-     */
-    has_previous_page: boolean;
-
-    /**
-     * Cursor pointing to the last item in the current page
-     */
-    end_cursor?: string | null;
-
-    /**
-     * Cursor pointing to the first item in the current page
-     */
-    start_cursor?: string | null;
-  }
 }
 
 export interface DocumentSummaryUpdateParams {
@@ -205,6 +203,7 @@ export declare namespace DocumentSummaries {
     type DocumentSummary as DocumentSummary,
     type DocumentSummaryEntryMode as DocumentSummaryEntryMode,
     type DocumentSummaryFormat as DocumentSummaryFormat,
+    type PageInfo as PageInfo,
     type DocumentSummaryListResponse as DocumentSummaryListResponse,
     type DocumentSummaryUpdateParams as DocumentSummaryUpdateParams,
     type DocumentSummaryListParams as DocumentSummaryListParams,

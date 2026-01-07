@@ -5,6 +5,7 @@ Types:
 - <code><a href="./src/resources/document-summaries.ts">DocumentSummary</a></code>
 - <code><a href="./src/resources/document-summaries.ts">DocumentSummaryEntryMode</a></code>
 - <code><a href="./src/resources/document-summaries.ts">DocumentSummaryFormat</a></code>
+- <code><a href="./src/resources/document-summaries.ts">PageInfo</a></code>
 - <code><a href="./src/resources/document-summaries.ts">DocumentSummaryListResponse</a></code>
 
 Methods:
@@ -95,10 +96,10 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/users.ts">UserRetrieveResponse</a></code>
+- <code><a href="./src/resources/users.ts">User</a></code>
 - <code><a href="./src/resources/users.ts">UserListResponse</a></code>
 
 Methods:
 
-- <code title="get /users/{id}">client.users.<a href="./src/resources/users.ts">retrieve</a>(id) -> UserRetrieveResponse</code>
+- <code title="get /users/{id}">client.users.<a href="./src/resources/users.ts">retrieve</a>(id) -> User</code>
 - <code title="get /users">client.users.<a href="./src/resources/users.ts">list</a>({ ...params }) -> UserListResponse</code>
