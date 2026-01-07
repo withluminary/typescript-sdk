@@ -49,7 +49,8 @@ export class Individuals extends APIResource {
   }
 
   /**
-   * Retrieve a paginated list of client profiles/individuals
+   * Retrieve a paginated list of client profiles/individuals using cursor-based
+   * pagination
    *
    * @example
    * ```ts
@@ -403,6 +404,16 @@ export interface IndividualUpdateParams {
 
 export interface IndividualListParams {
   /**
+   * Cursor for forward pagination. Returns items after this cursor.
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination. Returns items before this cursor.
+   */
+  before?: string;
+
+  /**
    * Filter individuals by household ID
    */
   household_id?: string;
@@ -413,14 +424,9 @@ export interface IndividualListParams {
   is_primary?: boolean;
 
   /**
-   * Maximum number of individuals to return
+   * Maximum number of items to return
    */
   limit?: number;
-
-  /**
-   * Number of individuals to skip
-   */
-  offset?: number;
 }
 
 export declare namespace Individuals {

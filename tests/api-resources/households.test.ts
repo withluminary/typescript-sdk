@@ -91,7 +91,14 @@ describe('resource households', () => {
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.households.list({ limit: 1, offset: 0 }, { path: '/_stainless_unknown_path' }),
+      client.households.list(
+        {
+          after: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          before: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          limit: 1,
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Luminary.NotFoundError);
   });
 
@@ -126,8 +133,9 @@ describe('resource households', () => {
       client.households.listDocuments(
         'id',
         {
+          after: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          before: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
           limit: 1,
-          offset: 0,
           type: 'GRAT_DESIGN_SUMMARY',
         },
         { path: '/_stainless_unknown_path' },
@@ -154,9 +162,10 @@ describe('resource households', () => {
       client.households.listEntities(
         'id',
         {
+          after: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          before: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
           kind: 'REVOCABLE_TRUST',
           limit: 1,
-          offset: 0,
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -182,9 +191,10 @@ describe('resource households', () => {
       client.households.listIndividuals(
         'id',
         {
+          after: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          before: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
           is_primary: true,
           limit: 1,
-          offset: 0,
         },
         { path: '/_stainless_unknown_path' },
       ),

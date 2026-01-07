@@ -52,7 +52,7 @@ export class Documents extends APIResource {
   }
 
   /**
-   * Retrieve a paginated list of documents
+   * Retrieve a paginated list of documents using cursor-based pagination
    *
    * @example
    * ```ts
@@ -163,7 +163,36 @@ export interface Document {
 export interface DocumentList {
   data: Array<Document>;
 
-  pagination: DocumentSummariesAPI.Pagination;
+  page_info: DocumentList.PageInfo;
+
+  /**
+   * Total number of items matching the query (across all pages)
+   */
+  total_count: number;
+}
+
+export namespace DocumentList {
+  export interface PageInfo {
+    /**
+     * When paginating forwards, are there more items?
+     */
+    has_next_page: boolean;
+
+    /**
+     * When paginating backwards, are there more items?
+     */
+    has_previous_page: boolean;
+
+    /**
+     * Cursor pointing to the last item in the current page
+     */
+    end_cursor?: string | null;
+
+    /**
+     * Cursor pointing to the first item in the current page
+     */
+    start_cursor?: string | null;
+  }
 }
 
 /**
@@ -284,19 +313,24 @@ export interface DocumentUpdateParams {
 
 export interface DocumentListParams {
   /**
+   * Cursor for forward pagination. Returns items after this cursor.
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination. Returns items before this cursor.
+   */
+  before?: string;
+
+  /**
    * Filter documents by household ID
    */
   household_id?: string;
 
   /**
-   * Maximum number of documents to return
+   * Maximum number of items to return
    */
   limit?: number;
-
-  /**
-   * Number of documents to skip
-   */
-  offset?: number;
 
   /**
    * Filter by document type

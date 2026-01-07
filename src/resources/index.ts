@@ -5,7 +5,6 @@ export {
   type DocumentSummary,
   type DocumentSummaryEntryMode,
   type DocumentSummaryFormat,
-  type Pagination,
   type DocumentSummaryListResponse,
   type DocumentSummaryUpdateParams,
   type DocumentSummaryListParams,
@@ -47,3 +46,4 @@ export {
   type IndividualUpdateParams,
   type IndividualListParams,
 } from './individuals';
+export { Users, type UserRetrieveResponse, type UserListResponse, type UserListParams } from './users';

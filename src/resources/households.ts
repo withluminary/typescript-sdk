@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as DocumentSummariesAPI from './document-summaries';
 import * as DocumentsAPI from './documents';
 import * as IndividualsAPI from './individuals';
 import * as EntitiesAPI from './entities/entities';
@@ -51,7 +50,7 @@ export class Households extends APIResource {
   }
 
   /**
-   * Retrieve a paginated list of households
+   * Retrieve a paginated list of households using cursor-based pagination
    *
    * @example
    * ```ts
@@ -175,13 +174,71 @@ export interface Household {
 export interface IndividualList {
   data: Array<IndividualsAPI.Individual>;
 
-  pagination: DocumentSummariesAPI.Pagination;
+  page_info: IndividualList.PageInfo;
+
+  /**
+   * Total number of items matching the query (across all pages)
+   */
+  total_count: number;
+}
+
+export namespace IndividualList {
+  export interface PageInfo {
+    /**
+     * When paginating forwards, are there more items?
+     */
+    has_next_page: boolean;
+
+    /**
+     * When paginating backwards, are there more items?
+     */
+    has_previous_page: boolean;
+
+    /**
+     * Cursor pointing to the last item in the current page
+     */
+    end_cursor?: string | null;
+
+    /**
+     * Cursor pointing to the first item in the current page
+     */
+    start_cursor?: string | null;
+  }
 }
 
 export interface HouseholdListResponse {
   data: Array<Household>;
 
-  pagination: DocumentSummariesAPI.Pagination;
+  page_info: HouseholdListResponse.PageInfo;
+
+  /**
+   * Total number of items matching the query (across all pages)
+   */
+  total_count: number;
+}
+
+export namespace HouseholdListResponse {
+  export interface PageInfo {
+    /**
+     * When paginating forwards, are there more items?
+     */
+    has_next_page: boolean;
+
+    /**
+     * When paginating backwards, are there more items?
+     */
+    has_previous_page: boolean;
+
+    /**
+     * Cursor pointing to the last item in the current page
+     */
+    end_cursor?: string | null;
+
+    /**
+     * Cursor pointing to the first item in the current page
+     */
+    start_cursor?: string | null;
+  }
 }
 
 export interface HouseholdCreateParams {
@@ -300,26 +357,36 @@ export interface HouseholdUpdateParams {
 
 export interface HouseholdListParams {
   /**
-   * Maximum number of households to return
+   * Cursor for forward pagination. Returns items after this cursor.
    */
-  limit?: number;
+  after?: string;
 
   /**
-   * Number of households to skip
+   * Cursor for backward pagination. Returns items before this cursor.
    */
-  offset?: number;
+  before?: string;
+
+  /**
+   * Maximum number of items to return
+   */
+  limit?: number;
 }
 
 export interface HouseholdListDocumentsParams {
   /**
-   * Maximum number of documents to return
+   * Cursor for forward pagination. Returns items after this cursor.
    */
-  limit?: number;
+  after?: string;
 
   /**
-   * Number of documents to skip
+   * Cursor for backward pagination. Returns items before this cursor.
    */
-  offset?: number;
+  before?: string;
+
+  /**
+   * Maximum number of items to return
+   */
+  limit?: number;
 
   /**
    * Filter by document type
@@ -329,36 +396,46 @@ export interface HouseholdListDocumentsParams {
 
 export interface HouseholdListEntitiesParams {
   /**
+   * Cursor for forward pagination. Returns items after this cursor.
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination. Returns items before this cursor.
+   */
+  before?: string;
+
+  /**
    * Filter by entity kind/type
    */
   kind?: EntitiesAPI.EntityKind;
 
   /**
-   * Maximum number of entities to return
+   * Maximum number of items to return
    */
   limit?: number;
-
-  /**
-   * Number of entities to skip
-   */
-  offset?: number;
 }
 
 export interface HouseholdListIndividualsParams {
+  /**
+   * Cursor for forward pagination. Returns items after this cursor.
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination. Returns items before this cursor.
+   */
+  before?: string;
+
   /**
    * Filter by primary client status
    */
   is_primary?: boolean;
 
   /**
-   * Maximum number of individuals to return
+   * Maximum number of items to return
    */
   limit?: number;
-
-  /**
-   * Number of individuals to skip
-   */
-  offset?: number;
 }
 
 export declare namespace Households {
