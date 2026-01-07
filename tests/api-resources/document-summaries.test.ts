@@ -51,10 +51,11 @@ describe('resource documentSummaries', () => {
     await expect(
       client.documentSummaries.list(
         {
+          after: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          before: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
           document_id: 'document_id',
           household_id: 'household_id',
           limit: 1,
-          offset: 0,
         },
         { path: '/_stainless_unknown_path' },
       ),

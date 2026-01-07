@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as DocumentSummariesAPI from '../document-summaries';
 import * as ValuationAPI from './valuation';
 import { Valuation, ValuationCreateParams, ValuationResource } from './valuation';
 import { APIPromise } from '../../core/api-promise';
@@ -25,7 +24,8 @@ export class Entities extends APIResource {
   }
 
   /**
-   * Retrieve a paginated list of entities (trusts, businesses, accounts, etc.)
+   * Retrieve a paginated list of entities (trusts, businesses, accounts, etc.) using
+   * cursor-based pagination
    *
    * @example
    * ```ts
@@ -129,10 +129,49 @@ export type EntityKind =
 export interface EntityList {
   data: Array<Entity>;
 
-  pagination: DocumentSummariesAPI.Pagination;
+  page_info: EntityList.PageInfo;
+
+  /**
+   * Total number of items matching the query (across all pages)
+   */
+  total_count: number;
+}
+
+export namespace EntityList {
+  export interface PageInfo {
+    /**
+     * When paginating forwards, are there more items?
+     */
+    has_next_page: boolean;
+
+    /**
+     * When paginating backwards, are there more items?
+     */
+    has_previous_page: boolean;
+
+    /**
+     * Cursor pointing to the last item in the current page
+     */
+    end_cursor?: string | null;
+
+    /**
+     * Cursor pointing to the first item in the current page
+     */
+    start_cursor?: string | null;
+  }
 }
 
 export interface EntityListParams {
+  /**
+   * Cursor for forward pagination. Returns items after this cursor.
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination. Returns items before this cursor.
+   */
+  before?: string;
+
   /**
    * Filter entities by household ID
    */
@@ -144,14 +183,9 @@ export interface EntityListParams {
   kind?: EntityKind;
 
   /**
-   * Maximum number of entities to return
+   * Maximum number of items to return
    */
   limit?: number;
-
-  /**
-   * Number of entities to skip
-   */
-  offset?: number;
 }
 
 Entities.ValuationResource = ValuationResource;

@@ -5,7 +5,6 @@ Types:
 - <code><a href="./src/resources/document-summaries.ts">DocumentSummary</a></code>
 - <code><a href="./src/resources/document-summaries.ts">DocumentSummaryEntryMode</a></code>
 - <code><a href="./src/resources/document-summaries.ts">DocumentSummaryFormat</a></code>
-- <code><a href="./src/resources/document-summaries.ts">Pagination</a></code>
 - <code><a href="./src/resources/document-summaries.ts">DocumentSummaryListResponse</a></code>
 
 Methods:
@@ -91,3 +90,15 @@ Methods:
 - <code title="put /individuals/{id}">client.individuals.<a href="./src/resources/individuals.ts">update</a>(id, { ...params }) -> Individual</code>
 - <code title="get /individuals">client.individuals.<a href="./src/resources/individuals.ts">list</a>({ ...params }) -> IndividualList</code>
 - <code title="delete /individuals/{id}">client.individuals.<a href="./src/resources/individuals.ts">delete</a>(id) -> void</code>
+
+# Users
+
+Types:
+
+- <code><a href="./src/resources/users.ts">UserRetrieveResponse</a></code>
+- <code><a href="./src/resources/users.ts">UserListResponse</a></code>
+
+Methods:
+
+- <code title="get /users/{id}">client.users.<a href="./src/resources/users.ts">retrieve</a>(id) -> UserRetrieveResponse</code>
+- <code title="get /users">client.users.<a href="./src/resources/users.ts">list</a>({ ...params }) -> UserListResponse</code>

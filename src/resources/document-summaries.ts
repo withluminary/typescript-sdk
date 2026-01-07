@@ -26,7 +26,7 @@ export class DocumentSummaries extends APIResource {
   }
 
   /**
-   * Retrieve a paginated list of document summaries
+   * Retrieve a paginated list of document summaries using cursor-based pagination
    */
   list(
     query: DocumentSummaryListParams | null | undefined = {},
@@ -109,27 +109,39 @@ export type DocumentSummaryEntryMode = 'AI_AUTO' | 'USER';
  */
 export type DocumentSummaryFormat = 'MARKDOWN' | 'PLAIN_TEXT';
 
-export interface Pagination {
-  /**
-   * Number of items per page
-   */
-  limit: number;
-
-  /**
-   * Number of items skipped
-   */
-  offset: number;
-
-  /**
-   * Total number of items available
-   */
-  total: number;
-}
-
 export interface DocumentSummaryListResponse {
   data: Array<DocumentSummary>;
 
-  pagination: Pagination;
+  page_info: DocumentSummaryListResponse.PageInfo;
+
+  /**
+   * Total number of items matching the query (across all pages)
+   */
+  total_count: number;
+}
+
+export namespace DocumentSummaryListResponse {
+  export interface PageInfo {
+    /**
+     * When paginating forwards, are there more items?
+     */
+    has_next_page: boolean;
+
+    /**
+     * When paginating backwards, are there more items?
+     */
+    has_previous_page: boolean;
+
+    /**
+     * Cursor pointing to the last item in the current page
+     */
+    end_cursor?: string | null;
+
+    /**
+     * Cursor pointing to the first item in the current page
+     */
+    start_cursor?: string | null;
+  }
 }
 
 export interface DocumentSummaryUpdateParams {
@@ -156,6 +168,16 @@ export interface DocumentSummaryUpdateParams {
 
 export interface DocumentSummaryListParams {
   /**
+   * Cursor for forward pagination. Returns items after this cursor.
+   */
+  after?: string;
+
+  /**
+   * Cursor for backward pagination. Returns items before this cursor.
+   */
+  before?: string;
+
+  /**
    * Filter summaries by document ID
    */
   document_id?: string;
@@ -166,14 +188,9 @@ export interface DocumentSummaryListParams {
   household_id?: string;
 
   /**
-   * Maximum number of summaries to return
+   * Maximum number of items to return
    */
   limit?: number;
-
-  /**
-   * Number of summaries to skip
-   */
-  offset?: number;
 }
 
 export interface DocumentSummaryDownloadParams {
@@ -188,7 +205,6 @@ export declare namespace DocumentSummaries {
     type DocumentSummary as DocumentSummary,
     type DocumentSummaryEntryMode as DocumentSummaryEntryMode,
     type DocumentSummaryFormat as DocumentSummaryFormat,
-    type Pagination as Pagination,
     type DocumentSummaryListResponse as DocumentSummaryListResponse,
     type DocumentSummaryUpdateParams as DocumentSummaryUpdateParams,
     type DocumentSummaryListParams as DocumentSummaryListParams,

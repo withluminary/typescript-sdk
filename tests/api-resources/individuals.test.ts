@@ -92,10 +92,11 @@ describe('resource individuals', () => {
     await expect(
       client.individuals.list(
         {
+          after: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          before: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
           household_id: 'household_id',
           is_primary: true,
           limit: 1,
-          offset: 0,
         },
         { path: '/_stainless_unknown_path' },
       ),

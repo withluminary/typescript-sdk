@@ -81,9 +81,10 @@ describe('resource documents', () => {
     await expect(
       client.documents.list(
         {
+          after: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          before: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
           household_id: 'household_id',
           limit: 1,
-          offset: 0,
           type: 'GRAT_DESIGN_SUMMARY',
         },
         { path: '/_stainless_unknown_path' },

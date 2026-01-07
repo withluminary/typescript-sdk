@@ -25,7 +25,6 @@ import {
   DocumentSummaryListParams,
   DocumentSummaryListResponse,
   DocumentSummaryUpdateParams,
-  Pagination,
 } from './resources/document-summaries';
 import {
   Document,
@@ -56,6 +55,7 @@ import {
   IndividualUpdateParams,
   Individuals,
 } from './resources/individuals';
+import { UserListParams, UserListResponse, UserRetrieveResponse, Users } from './resources/users';
 import { Entities, Entity, EntityKind, EntityList, EntityListParams } from './resources/entities/entities';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
@@ -860,6 +860,7 @@ export class Luminary {
   entities: API.Entities = new API.Entities(this);
   households: API.Households = new API.Households(this);
   individuals: API.Individuals = new API.Individuals(this);
+  users: API.Users = new API.Users(this);
 }
 
 Luminary.DocumentSummaries = DocumentSummaries;
@@ -867,6 +868,7 @@ Luminary.Documents = Documents;
 Luminary.Entities = Entities;
 Luminary.Households = Households;
 Luminary.Individuals = Individuals;
+Luminary.Users = Users;
 
 export declare namespace Luminary {
   export type RequestOptions = Opts.RequestOptions;
@@ -876,7 +878,6 @@ export declare namespace Luminary {
     type DocumentSummary as DocumentSummary,
     type DocumentSummaryEntryMode as DocumentSummaryEntryMode,
     type DocumentSummaryFormat as DocumentSummaryFormat,
-    type Pagination as Pagination,
     type DocumentSummaryListResponse as DocumentSummaryListResponse,
     type DocumentSummaryUpdateParams as DocumentSummaryUpdateParams,
     type DocumentSummaryListParams as DocumentSummaryListParams,
@@ -921,5 +922,12 @@ export declare namespace Luminary {
     type IndividualCreateParams as IndividualCreateParams,
     type IndividualUpdateParams as IndividualUpdateParams,
     type IndividualListParams as IndividualListParams,
+  };
+
+  export {
+    Users as Users,
+    type UserRetrieveResponse as UserRetrieveResponse,
+    type UserListResponse as UserListResponse,
+    type UserListParams as UserListParams,
   };
 }
