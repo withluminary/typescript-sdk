@@ -243,7 +243,7 @@ export namespace HouseholdCreateParams {
     last_name: string;
 
     /**
-     * State or province
+     * State or province code (2 letter code)
      */
     state: string;
 

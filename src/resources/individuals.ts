@@ -298,7 +298,7 @@ export interface IndividualCreateParams {
   postal_code?: string | null;
 
   /**
-   * State or province
+   * State or province code (2 letter code)
    */
   state?: string | null;
 
@@ -397,7 +397,7 @@ export interface IndividualUpdateParams {
   postal_code?: string | null;
 
   /**
-   * State or province
+   * State or province code (2 letter code)
    */
   state?: string | null;
 
