@@ -151,11 +151,6 @@ export interface Document {
   updated_at: string;
 
   /**
-   * Client profile ID if this document is associated with an individual
-   */
-  client_profile_id?: string | null;
-
-  /**
    * Whether this document should be used for AI suggestions
    */
   enable_ai_suggestions?: boolean;
@@ -164,6 +159,11 @@ export interface Document {
    * Entity ID if this document is owned by an entity
    */
   entity_id?: string | null;
+
+  /**
+   * Individual ID if this document is associated with an individual
+   */
+  individual_id?: string | null;
 }
 
 export interface DocumentList {
@@ -251,11 +251,6 @@ export interface DocumentCreateParams {
   type: DocumentType;
 
   /**
-   * Client profile ID if associated with an individual
-   */
-  client_profile_id?: string;
-
-  /**
    * Whether this document should be used for AI suggestions
    */
   enable_ai_suggestions?: boolean;
@@ -264,14 +259,14 @@ export interface DocumentCreateParams {
    * Entity ID if this document is owned by an entity
    */
   entity_id?: string;
+
+  /**
+   * Individual ID if associated with an individual
+   */
+  individual_id?: string;
 }
 
 export interface DocumentUpdateParams {
-  /**
-   * Client profile ID if associated with an individual
-   */
-  client_profile_id?: string | null;
-
   /**
    * Whether this document should be used for AI suggestions
    */
@@ -281,6 +276,11 @@ export interface DocumentUpdateParams {
    * Entity ID if this document is owned by an entity
    */
   entity_id?: string | null;
+
+  /**
+   * Individual ID if associated with an individual
+   */
+  individual_id?: string | null;
 
   /**
    * Display name of the document
