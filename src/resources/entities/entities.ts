@@ -84,6 +84,11 @@ export interface Entity {
   household_id: string;
 
   /**
+   * Whether the entity is in or out of the estate
+   */
+  in_estate_status: 'in_estate' | 'out_of_estate' | 'none';
+
+  /**
    * Type of entity - determines the specific subtype and applicable fields
    */
   kind: EntityKind;
