@@ -321,15 +321,14 @@ export class Luminary {
 
     if (!this.oauth2AuthState) {
       this.oauth2AuthState = {
-        promise: this.fetch(
-          this.buildURL('https://auth.withluminary.com/oauth2/token', { grant_type: 'client_credentials' }),
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Basic ${toBase64(`${this.clientID}:${this.clientSecret}`)}`,
-            },
+        promise: this.fetch(this.buildURL('https://auth.withluminary.com/oauth2/token', {}), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${toBase64(`${this.clientID}:${this.clientSecret}`)}`,
           },
-        ).then(async (res) => {
+          body: 'grant_type=client_credentials',
+        }).then(async (res) => {
           if (!res.ok) {
             const errText = await res.text().catch(() => '');
             const errJSON = errText ? safeJSON(errText) : undefined;
