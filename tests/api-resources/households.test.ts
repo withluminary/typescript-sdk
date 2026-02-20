@@ -9,7 +9,7 @@ const client = new Luminary({
 });
 
 describe('resource households', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.households.create({
       primary_relationship_owner_id: 'user_01ARZ3NDEKTSV4RRFFQ69G5FAV',
@@ -23,7 +23,7 @@ describe('resource households', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.households.create({
       primary_relationship_owner_id: 'user_01ARZ3NDEKTSV4RRFFQ69G5FAV',
@@ -51,7 +51,7 @@ describe('resource households', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.households.retrieve('id');
     const rawResponse = await responsePromise.asResponse();
@@ -63,7 +63,7 @@ describe('resource households', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update', async () => {
     const responsePromise = client.households.update('id', {});
     const rawResponse = await responsePromise.asResponse();
@@ -75,7 +75,7 @@ describe('resource households', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.households.list();
     const rawResponse = await responsePromise.asResponse();
@@ -87,7 +87,7 @@ describe('resource households', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -102,7 +102,7 @@ describe('resource households', () => {
     ).rejects.toThrow(Luminary.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete', async () => {
     const responsePromise = client.households.delete('id');
     const rawResponse = await responsePromise.asResponse();
@@ -114,7 +114,7 @@ describe('resource households', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listDocuments', async () => {
     const responsePromise = client.households.listDocuments('id');
     const rawResponse = await responsePromise.asResponse();
@@ -126,7 +126,7 @@ describe('resource households', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listDocuments: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -143,7 +143,7 @@ describe('resource households', () => {
     ).rejects.toThrow(Luminary.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listEntities', async () => {
     const responsePromise = client.households.listEntities('id');
     const rawResponse = await responsePromise.asResponse();
@@ -155,7 +155,7 @@ describe('resource households', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listEntities: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -172,7 +172,7 @@ describe('resource households', () => {
     ).rejects.toThrow(Luminary.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listIndividuals', async () => {
     const responsePromise = client.households.listIndividuals('id');
     const rawResponse = await responsePromise.asResponse();
@@ -184,7 +184,7 @@ describe('resource households', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listIndividuals: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
