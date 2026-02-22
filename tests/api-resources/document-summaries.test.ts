@@ -62,7 +62,8 @@ describe('resource documentSummaries', () => {
     ).rejects.toThrow(Luminary.NotFoundError);
   });
 
-  test('download: request options and params are passed correctly', async () => {
+  // Mock server tests are disabled
+  test.skip('download: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.documentSummaries.download('id', { format: 'pdf' }, { path: '/_stainless_unknown_path' }),
