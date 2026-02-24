@@ -60,7 +60,7 @@ $ yarn link withluminary
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global withluminary
+$ pnpm link --global withluminary
 ```
 
 ## Running tests
