@@ -9,7 +9,7 @@ const client = new Luminary({
 });
 
 describe('resource valuation', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.entities.valuation.create('id', {
       directly_held_assets: [
@@ -30,7 +30,7 @@ describe('resource valuation', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.entities.valuation.create('id', {
       directly_held_assets: [
@@ -46,7 +46,7 @@ describe('resource valuation', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.entities.valuation.retrieve('id');
     const rawResponse = await responsePromise.asResponse();
