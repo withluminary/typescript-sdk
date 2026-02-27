@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 (2026-02-27)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/withluminary/typescript-sdk/compare/v0.1.0...v0.1.1)
+
+### Chores
+
+* **internal:** move stringifyQuery implementation to internal function ([c2dc73e](https://github.com/withluminary/typescript-sdk/commit/c2dc73ed4a6a997ea2dee52ab62cb24b965e33eb))
+
 ## 0.1.0 (2026-02-24)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/withluminary/typescript-sdk/compare/v0.0.1...v0.1.0)
