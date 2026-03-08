@@ -12,7 +12,7 @@ describe('resource documents', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.documents.create({
-      file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+      file: await toFile(Buffer.from('Example data'), 'README.md'),
       household_id: 'household_01ARZ3NDEKTSV4RRFFQ69G5FAV',
       name: 'Trust Agreement.pdf',
       type: 'GRAT_DESIGN_SUMMARY',
@@ -29,7 +29,7 @@ describe('resource documents', () => {
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.documents.create({
-      file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+      file: await toFile(Buffer.from('Example data'), 'README.md'),
       household_id: 'household_01ARZ3NDEKTSV4RRFFQ69G5FAV',
       name: 'Trust Agreement.pdf',
       type: 'GRAT_DESIGN_SUMMARY',
