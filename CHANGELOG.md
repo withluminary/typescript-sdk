@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.1.2 (2026-03-14)
+
+Full Changelog: [v0.1.1...v0.1.2](https://github.com/withluminary/typescript-sdk/compare/v0.1.1...v0.1.2)
+
+### Bug Fixes
+
+* **client:** preserve URL params already embedded in path ([fcd980f](https://github.com/withluminary/typescript-sdk/commit/fcd980fc592ca2f6d913fb7cc9290e19b599be9f))
+* **tests:** correct setup of OAuth 2 Client Credentials tests ([9bc48aa](https://github.com/withluminary/typescript-sdk/commit/9bc48aac3aac5fc4c0c056f089be0553ef81944b))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([1bc472c](https://github.com/withluminary/typescript-sdk/commit/1bc472c432514cfaf154aba7550fea75923b939a))
+* **internal:** codegen related update ([ae2e34c](https://github.com/withluminary/typescript-sdk/commit/ae2e34c55ad81bfa58ae879d4656ada233ceb1ef))
+* **internal:** update dependencies to address dependabot vulnerabilities ([169d3dd](https://github.com/withluminary/typescript-sdk/commit/169d3dd6a662bfde1d9baa494609c5c0257ceee2))
+* update placeholder string ([90740e7](https://github.com/withluminary/typescript-sdk/commit/90740e72632dc68cba32872ae173fec0a1ecb192))
+
 ## 0.1.1 (2026-02-27)
 
 Full Changelog: [v0.1.0...v0.1.1](https://github.com/withluminary/typescript-sdk/compare/v0.1.0...v0.1.1)
