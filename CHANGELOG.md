@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.3 (2026-04-09)
+
+Full Changelog: [v0.1.2...v0.1.3](https://github.com/withluminary/typescript-sdk/compare/v0.1.2...v0.1.3)
+
+### Chores
+
+* **internal:** codegen related update ([e9ebf83](https://github.com/withluminary/typescript-sdk/commit/e9ebf8390e089208549e879f9443864e13b71a76))
+
 ## 0.1.2 (2026-03-25)
 
 Full Changelog: [v0.1.1...v0.1.2](https://github.com/withluminary/typescript-sdk/compare/v0.1.1...v0.1.2)
