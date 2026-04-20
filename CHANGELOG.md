@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-04-20)
+
+Full Changelog: [v0.1.3...v0.2.0](https://github.com/withluminary/typescript-sdk/compare/v0.1.3...v0.2.0)
+
+### Features
+
+* **api:** manual updates ([fd33e69](https://github.com/withluminary/typescript-sdk/commit/fd33e69a95b5a100f4884a2e40744756a921d858))
+
 ## 0.1.3 (2026-04-09)
 
 Full Changelog: [v0.1.2...v0.1.3](https://github.com/withluminary/typescript-sdk/compare/v0.1.2...v0.1.3)
