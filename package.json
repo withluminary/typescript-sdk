@@ -1,6 +1,6 @@
 {
   "name": "withluminary",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The official TypeScript library for the Luminary API",
   "author": "Luminary <support@withluminary.com>",
   "types": "dist/index.d.ts",
