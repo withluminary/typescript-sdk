@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 (2026-04-23)
+
+Full Changelog: [v0.2.0...v0.2.1](https://github.com/withluminary/typescript-sdk/compare/v0.2.0...v0.2.1)
+
+### Chores
+
+* **internal:** more robust bootstrap script ([8ea7f12](https://github.com/withluminary/typescript-sdk/commit/8ea7f129b3a1fa082379223952a263cd9515b71c))
+
 ## 0.2.0 (2026-04-20)
 
 Full Changelog: [v0.1.3...v0.2.0](https://github.com/withluminary/typescript-sdk/compare/v0.1.3...v0.2.0)
