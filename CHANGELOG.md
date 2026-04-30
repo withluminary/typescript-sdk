@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.0 (2026-04-30)
+
+Full Changelog: [v0.2.1...v0.3.0](https://github.com/withluminary/typescript-sdk/compare/v0.2.1...v0.3.0)
+
+### Features
+
+* support setting headers via env ([2f5e296](https://github.com/withluminary/typescript-sdk/commit/2f5e29631dbefc2cbd338320e82e6554a18c15a2))
+
+
+### Chores
+
+* **format:** run eslint and prettier separately ([06fa314](https://github.com/withluminary/typescript-sdk/commit/06fa3143a97f351becb5d45c085052f1da01cc7b))
+* **internal:** codegen related update ([cabca8a](https://github.com/withluminary/typescript-sdk/commit/cabca8a8d4d69f91bcd286f759cc9b311f3012af))
+
 ## 0.2.1 (2026-04-23)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/withluminary/typescript-sdk/compare/v0.2.0...v0.2.1)
