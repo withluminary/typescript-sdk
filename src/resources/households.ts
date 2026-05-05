@@ -187,6 +187,12 @@ export interface Household {
   updated_at: string;
 
   /**
+   * Customer-supplied identifier from an external system. Unique within the caller's
+   * tenant when set.
+   */
+  external_id?: string | null;
+
+  /**
    * Display name for the household
    */
   name?: string;
@@ -218,6 +224,12 @@ export interface HouseholdCreateParams {
    * User ID of the primary relationship owner
    */
   primary_relationship_owner_id: string;
+
+  /**
+   * Customer-supplied identifier from an external system. Unique within the caller's
+   * tenant when set.
+   */
+  external_id?: string | null;
 
   /**
    * Optional notes about the household
@@ -317,6 +329,12 @@ export namespace HouseholdCreateParams {
 
 export interface HouseholdUpdateParams {
   /**
+   * Customer-supplied identifier from an external system. Unique within the caller's
+   * tenant when set. Send null to clear.
+   */
+  external_id?: string | null;
+
+  /**
    * Notes about the household
    */
   notes?: string | null;
@@ -327,7 +345,12 @@ export interface HouseholdUpdateParams {
   primary_relationship_owner_id?: string;
 }
 
-export interface HouseholdListParams extends CursorPaginationParams {}
+export interface HouseholdListParams extends CursorPaginationParams {
+  /**
+   * Filter by external ID (exact match within the caller's tenant)
+   */
+  external_id?: string;
+}
 
 export interface HouseholdListDocumentsParams extends CursorPaginationParams {
   /**
