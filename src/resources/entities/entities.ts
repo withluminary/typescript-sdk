@@ -112,6 +112,12 @@ export interface Entity {
    * Timestamp when the entity was last updated
    */
   updated_at: string;
+
+  /**
+   * Customer-supplied identifier from an external system. Unique within the caller's
+   * tenant when set.
+   */
+  external_id?: string | null;
 }
 
 /**
@@ -153,6 +159,11 @@ export interface EntityList {
 }
 
 export interface EntityListParams extends CursorPaginationParams {
+  /**
+   * Filter by external ID (exact match within the caller's tenant)
+   */
+  external_id?: string;
+
   /**
    * Filter entities by household ID
    */
