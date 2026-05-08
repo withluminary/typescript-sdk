@@ -41,6 +41,7 @@ describe('resource entities', () => {
         {
           after: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
           before: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          external_id: 'x',
           household_id: 'household_id',
           kind: 'REVOCABLE_TRUST',
           limit: 1,

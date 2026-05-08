@@ -27,6 +27,7 @@ describe('resource households', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.households.create({
       primary_relationship_owner_id: 'user_01ARZ3NDEKTSV4RRFFQ69G5FAV',
+      external_id: 'crm-household-12345',
       notes: 'notes',
       primary_individuals: [
         {
@@ -95,6 +96,7 @@ describe('resource households', () => {
         {
           after: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
           before: 'eyJpZCI6ImhvdXNlaG9sZF8wMUFSWjNOREVLVFNWNFJSRkZRNjlHNUZBViJ9',
+          external_id: 'x',
           limit: 1,
         },
         { path: '/_stainless_unknown_path' },

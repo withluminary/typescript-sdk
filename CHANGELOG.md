@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.0 (2026-05-08)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/withluminary/typescript-sdk/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* **publicapi:** add external_id to households and entities ([4f4bbce](https://github.com/withluminary/typescript-sdk/commit/4f4bbce622e88edea9458ce25d98b3a331e8c6f3))
+
+
+### Chores
+
+* redact api-key headers in debug logs ([2d9b96b](https://github.com/withluminary/typescript-sdk/commit/2d9b96be72acfc00499bb7fd944e144e38c709bf))
+
 ## 0.3.0 (2026-04-30)
 
 Full Changelog: [v0.2.1...v0.3.0](https://github.com/withluminary/typescript-sdk/compare/v0.2.1...v0.3.0)
