@@ -1,7 +1,6 @@
 import fs from 'fs';
 import type { ResponseLike } from 'withluminary/internal/to-file';
 import { toFile } from 'withluminary/core/uploads';
-import { File } from 'node:buffer';
 
 class MyClass {
   name: string = 'foo';
