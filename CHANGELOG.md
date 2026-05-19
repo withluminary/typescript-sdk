@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.1 (2026-05-19)
+
+Full Changelog: [v0.4.0...v0.4.1](https://github.com/withluminary/typescript-sdk/compare/v0.4.0...v0.4.1)
+
+### Bug Fixes
+
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([67fa73d](https://github.com/withluminary/typescript-sdk/commit/67fa73d91a434258fa5cac3584404d225ce1bf9c))
+
+
+### Chores
+
+* **tests:** remove redundant File import ([abf3b36](https://github.com/withluminary/typescript-sdk/commit/abf3b3654bda03e1140546f139bed62ce0003368))
+
 ## 0.4.0 (2026-05-08)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/withluminary/typescript-sdk/compare/v0.3.0...v0.4.0)
