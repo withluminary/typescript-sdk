@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.2 (2026-06-17)
+
+Full Changelog: [v0.4.1...v0.4.2](https://github.com/withluminary/typescript-sdk/compare/v0.4.1...v0.4.2)
+
+### Bug Fixes
+
+* **client:** send content-type header for requests with an omitted optional body ([fa90c38](https://github.com/withluminary/typescript-sdk/commit/fa90c388a9541718039dbd516ef87f1fc2bcff44))
+
 ## 0.4.1 (2026-05-19)
 
 Full Changelog: [v0.4.0...v0.4.1](https://github.com/withluminary/typescript-sdk/compare/v0.4.0...v0.4.1)
