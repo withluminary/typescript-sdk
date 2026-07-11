@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.3 (2026-07-11)
+
+Full Changelog: [v0.4.2...v0.4.3](https://github.com/withluminary/typescript-sdk/compare/v0.4.2...v0.4.3)
+
+### Bug Fixes
+
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([494ead7](https://github.com/withluminary/typescript-sdk/commit/494ead79805b90db2c75e297d8c7e65733bf8805))
+
 ## 0.4.2 (2026-06-17)
 
 Full Changelog: [v0.4.1...v0.4.2](https://github.com/withluminary/typescript-sdk/compare/v0.4.1...v0.4.2)
