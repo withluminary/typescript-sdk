@@ -1,0 +1,174 @@
+# Changelog
+
+## 0.5.0 (2026-07-23)
+
+Full Changelog: [v0.4.3...v0.5.0](https://github.com/withluminary/typescript-sdk/compare/v0.4.3...v0.5.0)
+
+### Features
+
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([26118a2](https://github.com/withluminary/typescript-sdk/commit/26118a21f44572d5220fb3e55fc17173421c27cf))
+
+## 0.4.3 (2026-07-11)
+
+Full Changelog: [v0.4.2...v0.4.3](https://github.com/withluminary/typescript-sdk/compare/v0.4.2...v0.4.3)
+
+### Bug Fixes
+
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([494ead7](https://github.com/withluminary/typescript-sdk/commit/494ead79805b90db2c75e297d8c7e65733bf8805))
+
+## 0.4.2 (2026-06-17)
+
+Full Changelog: [v0.4.1...v0.4.2](https://github.com/withluminary/typescript-sdk/compare/v0.4.1...v0.4.2)
+
+### Bug Fixes
+
+* **client:** send content-type header for requests with an omitted optional body ([fa90c38](https://github.com/withluminary/typescript-sdk/commit/fa90c388a9541718039dbd516ef87f1fc2bcff44))
+
+## 0.4.1 (2026-05-19)
+
+Full Changelog: [v0.4.0...v0.4.1](https://github.com/withluminary/typescript-sdk/compare/v0.4.0...v0.4.1)
+
+### Bug Fixes
+
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([67fa73d](https://github.com/withluminary/typescript-sdk/commit/67fa73d91a434258fa5cac3584404d225ce1bf9c))
+
+
+### Chores
+
+* **tests:** remove redundant File import ([abf3b36](https://github.com/withluminary/typescript-sdk/commit/abf3b3654bda03e1140546f139bed62ce0003368))
+
+## 0.4.0 (2026-05-08)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/withluminary/typescript-sdk/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* **publicapi:** add external_id to households and entities ([4f4bbce](https://github.com/withluminary/typescript-sdk/commit/4f4bbce622e88edea9458ce25d98b3a331e8c6f3))
+
+
+### Chores
+
+* redact api-key headers in debug logs ([2d9b96b](https://github.com/withluminary/typescript-sdk/commit/2d9b96be72acfc00499bb7fd944e144e38c709bf))
+
+## 0.3.0 (2026-04-30)
+
+Full Changelog: [v0.2.1...v0.3.0](https://github.com/withluminary/typescript-sdk/compare/v0.2.1...v0.3.0)
+
+### Features
+
+* support setting headers via env ([2f5e296](https://github.com/withluminary/typescript-sdk/commit/2f5e29631dbefc2cbd338320e82e6554a18c15a2))
+
+
+### Chores
+
+* **format:** run eslint and prettier separately ([06fa314](https://github.com/withluminary/typescript-sdk/commit/06fa3143a97f351becb5d45c085052f1da01cc7b))
+* **internal:** codegen related update ([cabca8a](https://github.com/withluminary/typescript-sdk/commit/cabca8a8d4d69f91bcd286f759cc9b311f3012af))
+
+## 0.2.1 (2026-04-23)
+
+Full Changelog: [v0.2.0...v0.2.1](https://github.com/withluminary/typescript-sdk/compare/v0.2.0...v0.2.1)
+
+### Chores
+
+* **internal:** more robust bootstrap script ([8ea7f12](https://github.com/withluminary/typescript-sdk/commit/8ea7f129b3a1fa082379223952a263cd9515b71c))
+
+## 0.2.0 (2026-04-20)
+
+Full Changelog: [v0.1.3...v0.2.0](https://github.com/withluminary/typescript-sdk/compare/v0.1.3...v0.2.0)
+
+### Features
+
+* **api:** manual updates ([fd33e69](https://github.com/withluminary/typescript-sdk/commit/fd33e69a95b5a100f4884a2e40744756a921d858))
+
+## 0.1.3 (2026-04-09)
+
+Full Changelog: [v0.1.2...v0.1.3](https://github.com/withluminary/typescript-sdk/compare/v0.1.2...v0.1.3)
+
+### Chores
+
+* **internal:** codegen related update ([e9ebf83](https://github.com/withluminary/typescript-sdk/commit/e9ebf8390e089208549e879f9443864e13b71a76))
+
+## 0.1.2 (2026-03-25)
+
+Full Changelog: [v0.1.1...v0.1.2](https://github.com/withluminary/typescript-sdk/compare/v0.1.1...v0.1.2)
+
+### Bug Fixes
+
+* **client:** preserve URL params already embedded in path ([fcd980f](https://github.com/withluminary/typescript-sdk/commit/fcd980fc592ca2f6d913fb7cc9290e19b599be9f))
+* **tests:** correct setup of OAuth 2 Client Credentials tests ([9bc48aa](https://github.com/withluminary/typescript-sdk/commit/9bc48aac3aac5fc4c0c056f089be0553ef81944b))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([5180e3b](https://github.com/withluminary/typescript-sdk/commit/5180e3b7b297f121448ba42b00fcbfc509927383))
+* **ci:** skip uploading artifacts on stainless-internal branches ([1bc472c](https://github.com/withluminary/typescript-sdk/commit/1bc472c432514cfaf154aba7550fea75923b939a))
+* **internal:** codegen related update ([ae2e34c](https://github.com/withluminary/typescript-sdk/commit/ae2e34c55ad81bfa58ae879d4656ada233ceb1ef))
+* **internal:** tweak CI branches ([328f72e](https://github.com/withluminary/typescript-sdk/commit/328f72e08027ef2a4ef75f5263927453e4ad9e34))
+* **internal:** update dependencies to address dependabot vulnerabilities ([169d3dd](https://github.com/withluminary/typescript-sdk/commit/169d3dd6a662bfde1d9baa494609c5c0257ceee2))
+* **internal:** update gitignore ([453b8ac](https://github.com/withluminary/typescript-sdk/commit/453b8ac4f3b43950f0886ebf8faf66d297aeb780))
+* update placeholder string ([90740e7](https://github.com/withluminary/typescript-sdk/commit/90740e72632dc68cba32872ae173fec0a1ecb192))
+
+## 0.1.1 (2026-02-27)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/withluminary/typescript-sdk/compare/v0.1.0...v0.1.1)
+
+### Chores
+
+* **internal:** move stringifyQuery implementation to internal function ([c2dc73e](https://github.com/withluminary/typescript-sdk/commit/c2dc73ed4a6a997ea2dee52ab62cb24b965e33eb))
+
+## 0.1.0 (2026-02-24)
+
+Full Changelog: [v0.0.1...v0.1.0](https://github.com/withluminary/typescript-sdk/compare/v0.0.1...v0.1.0)
+
+### Features
+
+* **api:** add cursor config ([4bd9999](https://github.com/withluminary/typescript-sdk/commit/4bd99999c5d997a4af650833e93b32dbdce30481))
+* **api:** configurable auth domain ([8ced713](https://github.com/withluminary/typescript-sdk/commit/8ced713a51f444a11d7e0e9658da74b05daeb239))
+* **api:** manual updates ([83b7395](https://github.com/withluminary/typescript-sdk/commit/83b7395959ad7db5655618acff60067cb0a072f0))
+* **api:** manual updates ([806d13b](https://github.com/withluminary/typescript-sdk/commit/806d13bfe069211f5a3c8c51cb1e44aeeb640a0c))
+* **api:** manual updates ([45e809e](https://github.com/withluminary/typescript-sdk/commit/45e809e60ec377010a68fca4a78dec5ca53814cf))
+* **api:** manual updates ([d58efd3](https://github.com/withluminary/typescript-sdk/commit/d58efd3bdee194370d84558f8a445fb2a0dc958a))
+* **api:** manual updates ([2343256](https://github.com/withluminary/typescript-sdk/commit/2343256aef247ff9566fc64365c06555e339266f))
+* **api:** revert token change ([dfdcf77](https://github.com/withluminary/typescript-sdk/commit/dfdcf778c875ff9b6c031df428570e6bfef0a76b))
+
+
+### Bug Fixes
+
+* **client:** avoid memory leak with abort signals ([f279f3c](https://github.com/withluminary/typescript-sdk/commit/f279f3cfe8fb5974f79b51663ea7b9af08c1a15e))
+* **client:** avoid removing abort listener too early ([5c33fa5](https://github.com/withluminary/typescript-sdk/commit/5c33fa587acd8ec8564f92a476f37dddf84526dd))
+* **docs/contributing:** correct pnpm link command ([73396a7](https://github.com/withluminary/typescript-sdk/commit/73396a794e53c7f8ac93077ac52dceedd41a8779))
+* **internal:** skip tests that depend on mock server ([e6b11eb](https://github.com/withluminary/typescript-sdk/commit/e6b11eb602c00ba3de9c6675da9277681b4898ed))
+* **mcp:** correct code tool API endpoint ([668a385](https://github.com/withluminary/typescript-sdk/commit/668a3857b856e399965754585087e3f073544829))
+* **mcp:** return correct lines on typescript errors ([5d21f0c](https://github.com/withluminary/typescript-sdk/commit/5d21f0c5447cd6056c0fb195c90d108333025188))
+* pass oauth2 grant_type in body of request ([a623b64](https://github.com/withluminary/typescript-sdk/commit/a623b64b671b5958b27d6fa720f294b7eeab5acd))
+* various public API fixes ([d45ea97](https://github.com/withluminary/typescript-sdk/commit/d45ea97cac55e4139c7053063ad6c96f10f53ae4))
+
+
+### Chores
+
+* add entity in-estate status to API ([8c9ad50](https://github.com/withluminary/typescript-sdk/commit/8c9ad50c8bf62f18d544ab65395bf0ac74b1fa26))
+* break long lines in snippets into multiline ([0f2bf40](https://github.com/withluminary/typescript-sdk/commit/0f2bf40c970249801015c3888864f1a003d9b89d))
+* **ci:** upgrade `actions/github-script` ([dffcf95](https://github.com/withluminary/typescript-sdk/commit/dffcf9558f268fa628cf82bc9409bf8299ab84eb))
+* **client:** do not parse responses with empty content-length ([987553e](https://github.com/withluminary/typescript-sdk/commit/987553e9b6b88b27ed5296072e580d58bdeafd28))
+* **client:** fix logger property type ([6a0cc88](https://github.com/withluminary/typescript-sdk/commit/6a0cc881ef9dd19e12fbfa51c0daca6a0a4db868))
+* **internal/client:** fix form-urlencoded requests ([45d5f3f](https://github.com/withluminary/typescript-sdk/commit/45d5f3fcf82887bb46154362a8eef2ae7a036a02))
+* **internal:** avoid type checking errors with ts-reset ([865e9a2](https://github.com/withluminary/typescript-sdk/commit/865e9a23a76c2ef463a5ca2082d8588e4708fa19))
+* **internal:** codegen related update ([ed3fdfd](https://github.com/withluminary/typescript-sdk/commit/ed3fdfdf02f6ccac3fa7e72182a4304559d068d0))
+* **internal:** codegen related update ([da373a4](https://github.com/withluminary/typescript-sdk/commit/da373a428fc8091104363b96a1350b12ee138768))
+* **internal:** codegen related update ([844d3f8](https://github.com/withluminary/typescript-sdk/commit/844d3f89d12f9baf89845e5b0034ff6fb8603f72))
+* **internal:** configure pnpm minimumReleaseAge to 1 day ([8151605](https://github.com/withluminary/typescript-sdk/commit/8151605f1e0788f5294ac1856655974a131e9344))
+* **internal:** fix pagination internals not accepting option promises ([a60041d](https://github.com/withluminary/typescript-sdk/commit/a60041d4a74a9d634ed30b7837a508e3ebe3952f))
+* **internal:** remove mock server code ([37acfa5](https://github.com/withluminary/typescript-sdk/commit/37acfa585f68b3c27634749704c59b6af23baffc))
+* **internal:** update `actions/checkout` version ([e737946](https://github.com/withluminary/typescript-sdk/commit/e7379462da4cea949f895203de71ce58be7c2917))
+* **internal:** update lock file ([19d61ac](https://github.com/withluminary/typescript-sdk/commit/19d61acacc914359c4e6fdb0c2266d6dbf1554e2))
+* **internal:** upgrade babel, qs, js-yaml ([296d220](https://github.com/withluminary/typescript-sdk/commit/296d220cb20174ed88831eac7e9cf118b90fd0c7))
+* **internal:** upgrade brace-expansion and @babel/helpers ([9714963](https://github.com/withluminary/typescript-sdk/commit/97149636f879a8180bc4a397ffda20b18fed9bb3))
+* **internal:** upgrade eslint ([b8cc80f](https://github.com/withluminary/typescript-sdk/commit/b8cc80fcd24897e27e58462bd0b50be4be9573cd))
+* **internal:** upgrade pnpm ([88e1f70](https://github.com/withluminary/typescript-sdk/commit/88e1f704b72bda2e7e110e0cc8d767f9e09f7e49))
+* **internal:** upgrade pnpm version ([e75b0c1](https://github.com/withluminary/typescript-sdk/commit/e75b0c15ba3b37e9bbd57ba151667ab20eae25bb))
+* remove custom code ([b155797](https://github.com/withluminary/typescript-sdk/commit/b1557977fdecec8b0d999916b8c074cf04429e8a))
+* update mock server docs ([0dcdb39](https://github.com/withluminary/typescript-sdk/commit/0dcdb3940f295f468bebcefc5232b981e9d93450))
+* update SDK settings ([c4d5bd8](https://github.com/withluminary/typescript-sdk/commit/c4d5bd880eaed839d3f5163b3eb5452a79a8e25f))
+* update SDK settings ([5dceac5](https://github.com/withluminary/typescript-sdk/commit/5dceac5024cf41956bb00b48a638f0ae98bcd0f7))
+* update SDK settings ([1c4380a](https://github.com/withluminary/typescript-sdk/commit/1c4380ab46515dfcec2d58b82448a5cbd47252f5))
+* user endpoint and pagination ([fb2eb4f](https://github.com/withluminary/typescript-sdk/commit/fb2eb4ff892b302c38135f7c3098d1a236817b75))
