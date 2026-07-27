@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.1 (2026-07-27)
+
+Full Changelog: [v0.5.0...v0.5.1](https://github.com/withluminary/typescript-sdk/compare/v0.5.0...v0.5.1)
+
+### Chores
+
+* **ci:** remove dead stlc-sync workflow (unused in single-repo) ([#17](https://github.com/withluminary/typescript-sdk/issues/17)) ([f8fa0a7](https://github.com/withluminary/typescript-sdk/commit/f8fa0a7dcb4d5c5d88dc267fc0e83219d7dda711))
+
 ## 0.5.0 (2026-07-23)
 
 Full Changelog: [v0.4.3...v0.5.0](https://github.com/withluminary/typescript-sdk/compare/v0.4.3...v0.5.0)
