@@ -98,9 +98,6 @@ export interface Entity {
    */
   stage:
     | 'PRE_CREATED'
-    | 'AI_CREATING'
-    | 'AI_CREATION_FAILED'
-    | 'AI_NEEDS_REVIEW'
     | 'DRAFT'
     | 'READY_FOR_PROPOSAL'
     | 'IMPLEMENTATION'
