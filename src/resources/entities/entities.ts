@@ -96,14 +96,7 @@ export interface Entity {
   /**
    * Lifecycle stage of the entity
    */
-  stage:
-    | 'PRE_CREATED'
-    | 'DRAFT'
-    | 'READY_FOR_PROPOSAL'
-    | 'IMPLEMENTATION'
-    | 'ACTIVE'
-    | 'COMPLETED'
-    | 'ARCHIVED';
+  stage: 'PRE_CREATED' | 'DRAFT' | 'READY_FOR_PROPOSAL' | 'IMPLEMENTATION' | 'ACTIVE' | 'COMPLETED';
 
   /**
    * Timestamp when the entity was last updated
