@@ -151,11 +151,6 @@ export interface Document {
   updated_at: string;
 
   /**
-   * Whether this document should be used for AI suggestions
-   */
-  enable_ai_suggestions?: boolean;
-
-  /**
    * Entity ID if this document is owned by an entity
    */
   entity_id?: string | null;
@@ -251,11 +246,6 @@ export interface DocumentCreateParams {
   type: DocumentType;
 
   /**
-   * Whether this document should be used for AI suggestions
-   */
-  enable_ai_suggestions?: boolean;
-
-  /**
    * Entity ID if this document is owned by an entity
    */
   entity_id?: string;
@@ -267,11 +257,6 @@ export interface DocumentCreateParams {
 }
 
 export interface DocumentUpdateParams {
-  /**
-   * Whether this document should be used for AI suggestions
-   */
-  enable_ai_suggestions?: boolean;
-
   /**
    * Entity ID if this document is owned by an entity
    */
