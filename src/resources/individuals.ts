@@ -107,12 +107,6 @@ export interface Individual {
   household_id: string;
 
   /**
-   * Whether this client profile should be an eligible beneficiary for entities and
-   * gifts
-   */
-  is_beneficiary: boolean;
-
-  /**
    * Whether this client profile is deceased
    */
   is_deceased: boolean;
@@ -127,11 +121,6 @@ export interface Individual {
    * Whether this is one of the (at most) two primary clients on this household
    */
   is_primary: boolean;
-
-  /**
-   * Whether this client profile should be an eligible trustee for entities
-   */
-  is_trustee: boolean;
 
   /**
    * Last name of the individual
@@ -256,12 +245,6 @@ export interface IndividualCreateParams {
   email?: string | null;
 
   /**
-   * Whether this client profile should be an eligible beneficiary for entities and
-   * gifts
-   */
-  is_beneficiary?: boolean;
-
-  /**
    * Whether the individual is deceased
    */
   is_deceased?: boolean;
@@ -276,11 +259,6 @@ export interface IndividualCreateParams {
    * Whether this is a primary client of the household (at most 2 per household)
    */
   is_primary?: boolean;
-
-  /**
-   * Whether this client profile should be an eligible trustee for entities
-   */
-  is_trustee?: boolean;
 
   /**
    * Middle name of the individual
@@ -350,12 +328,6 @@ export interface IndividualUpdateParams {
   first_name?: string;
 
   /**
-   * Whether this client profile should be an eligible beneficiary for entities and
-   * gifts
-   */
-  is_beneficiary?: boolean;
-
-  /**
    * Whether the individual is deceased
    */
   is_deceased?: boolean;
@@ -370,11 +342,6 @@ export interface IndividualUpdateParams {
    * Whether this is a primary client of the household (at most 2 per household)
    */
   is_primary?: boolean;
-
-  /**
-   * Whether this client profile should be an eligible trustee for entities
-   */
-  is_trustee?: boolean;
 
   /**
    * Last name of the individual

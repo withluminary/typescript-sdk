@@ -290,20 +290,9 @@ export namespace HouseholdCreateParams {
     email?: string | null;
 
     /**
-     * Whether this client profile should be an eligible beneficiary for entities and
-     * gifts
-     */
-    is_beneficiary?: boolean;
-
-    /**
      * Whether the individual is deceased
      */
     is_deceased?: boolean;
-
-    /**
-     * Whether this client profile should be an eligible trustee for entities
-     */
-    is_trustee?: boolean;
 
     /**
      * Middle name of the individual
