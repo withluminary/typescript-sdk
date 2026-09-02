@@ -33,7 +33,6 @@ describe('resource documents', () => {
       household_id: 'household_01ARZ3NDEKTSV4RRFFQ69G5FAV',
       name: 'Trust Agreement.pdf',
       type: 'GRAT_DESIGN_SUMMARY',
-      enable_ai_suggestions: true,
       entity_id: 'entity_01ARZ3NDEKTSV4RRFFQ69G5FAV',
       individual_id: 'client_profile_01ARZ3NDEKTSV4RRFFQ69G5FAV',
     });
