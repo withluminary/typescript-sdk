@@ -107,8 +107,7 @@ export interface Individual {
   household_id: string;
 
   /**
-   * Whether this client profile should be an eligible beneficiary for entities and
-   * gifts
+   * @deprecated Deprecated. This field always returns true.
    */
   is_beneficiary: boolean;
 
@@ -129,7 +128,7 @@ export interface Individual {
   is_primary: boolean;
 
   /**
-   * Whether this client profile should be an eligible trustee for entities
+   * @deprecated Deprecated. This field always returns true.
    */
   is_trustee: boolean;
 
@@ -256,8 +255,7 @@ export interface IndividualCreateParams {
   email?: string | null;
 
   /**
-   * Whether this client profile should be an eligible beneficiary for entities and
-   * gifts
+   * @deprecated Deprecated. This field is accepted for compatibility and ignored.
    */
   is_beneficiary?: boolean;
 
@@ -278,7 +276,7 @@ export interface IndividualCreateParams {
   is_primary?: boolean;
 
   /**
-   * Whether this client profile should be an eligible trustee for entities
+   * @deprecated Deprecated. This field is accepted for compatibility and ignored.
    */
   is_trustee?: boolean;
 
@@ -350,8 +348,7 @@ export interface IndividualUpdateParams {
   first_name?: string;
 
   /**
-   * Whether this client profile should be an eligible beneficiary for entities and
-   * gifts
+   * @deprecated Deprecated. This field is accepted for compatibility and ignored.
    */
   is_beneficiary?: boolean;
 
@@ -372,7 +369,7 @@ export interface IndividualUpdateParams {
   is_primary?: boolean;
 
   /**
-   * Whether this client profile should be an eligible trustee for entities
+   * @deprecated Deprecated. This field is accepted for compatibility and ignored.
    */
   is_trustee?: boolean;
 
