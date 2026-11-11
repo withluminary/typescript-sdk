@@ -290,8 +290,7 @@ export namespace HouseholdCreateParams {
     email?: string | null;
 
     /**
-     * Whether this client profile should be an eligible beneficiary for entities and
-     * gifts
+     * @deprecated Deprecated. This field is accepted for compatibility and ignored.
      */
     is_beneficiary?: boolean;
 
@@ -301,7 +300,7 @@ export namespace HouseholdCreateParams {
     is_deceased?: boolean;
 
     /**
-     * Whether this client profile should be an eligible trustee for entities
+     * @deprecated Deprecated. This field is accepted for compatibility and ignored.
      */
     is_trustee?: boolean;
 
