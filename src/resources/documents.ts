@@ -151,11 +151,6 @@ export interface Document {
   updated_at: string;
 
   /**
-   * Whether this document should be used for AI suggestions
-   */
-  enable_ai_suggestions?: boolean;
-
-  /**
    * Entity ID if this document is owned by an entity
    */
   entity_id?: string | null;
@@ -186,6 +181,8 @@ export type DocumentType =
   | 'ASSET_VALUATION'
   | 'SIGNED_TRUST_DOCUMENT'
   | 'TRUST_AMENDMENT'
+  | 'TRUST_RELATED_DOCUMENT'
+  | 'CERTIFICATE_OF_TRUST'
   | 'TRANSFER_CONFIRMATION'
   | 'EXISTING_REMAINDER_TRUST_DOCUMENT'
   | 'BALANCE_SHEET'
@@ -251,11 +248,6 @@ export interface DocumentCreateParams {
   type: DocumentType;
 
   /**
-   * Whether this document should be used for AI suggestions
-   */
-  enable_ai_suggestions?: boolean;
-
-  /**
    * Entity ID if this document is owned by an entity
    */
   entity_id?: string;
@@ -267,11 +259,6 @@ export interface DocumentCreateParams {
 }
 
 export interface DocumentUpdateParams {
-  /**
-   * Whether this document should be used for AI suggestions
-   */
-  enable_ai_suggestions?: boolean;
-
   /**
    * Entity ID if this document is owned by an entity
    */
